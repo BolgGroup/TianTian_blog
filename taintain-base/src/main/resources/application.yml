@@ -1,0 +1,14 @@
+#应用配置
+server:
+  port: 8383
+  servlet:
+    context-path: /tiantian_blog
+
+spring:
+  # 选择加载不同环境的配置文件
+  profiles:
+    active: dev
+
+#配置日志文件
+logging:
+  config: classpath:log/logback-spring.xml

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <!-- 文件输出格式 -->
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} :%msg%n" />
+    <!-- test文件路径 -->
+    <property name="TEST_FILE_PATH" value="logs/test" />
+    <!-- pro文件路径 -->
+    <property name="PRO_FILE_PATH" value="logs/pro" />
+
+    <!-- 开发环境 -->
+    <springProfile name="dev">
+        <!-- 输出到控制台 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <layout  class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- 测试环境 -->
+    <springProfile name="test">
+        <!-- 输出到文件 -->
+        <appender name="test_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${TEST_FILE_PATH}/tiantian_blog.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <!-- 文件最大保存历史数量(天) -->
+                <MaxHistory>100</MaxHistory>
+                <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
+                <totalSizeCap>100MB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <charset>UTF-8</charset>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <root level="info">
+            <appender-ref ref="test_file" />
+        </root>
+    </springProfile>
+
+    <!-- 生产环境 -->
+    <springProfile name="pro">
+        <!-- 输出到文件 -->
+        <appender name="prod_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${PRO_FILE_PATH}/tiantian_blog.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <MaxHistory>100</MaxHistory>
+                <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
+                <totalSizeCap>500MB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <charset>UTF-8</charset>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <root level="info">
+            <appender-ref ref="prod_file" />
+        </root>
+    </springProfile>
+
+</configuration>
