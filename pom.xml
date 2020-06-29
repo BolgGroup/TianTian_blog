@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TianTian_blog</name>
 	<packaging>pom</packaging>
-	<description>天天博客</description>
+	<description>天天博客1</description>
 
 	<properties>
 		<java.version>1.8</java.version>
