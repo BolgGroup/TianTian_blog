@@ -34,7 +34,8 @@ public class BaseLoginConfig implements WebMvcConfigurer {
         InterceptorRegistration addInterceptor = registry.addInterceptor(overAuthInterceptor);
         addInterceptor.excludePathPatterns("/error/**");
         addInterceptor.excludePathPatterns("/assets/**");
-        addInterceptor.excludePathPatterns("/static/**");// 排除静态资源
+        // 排除静态资源
+        addInterceptor.excludePathPatterns("/static/**");
         addInterceptor.excludePathPatterns("/login");
         addInterceptor.excludePathPatterns("/");
         addInterceptor.excludePathPatterns("/logout");

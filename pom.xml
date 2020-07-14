@@ -53,11 +53,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<scope>compile</scope>
 			<optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
 		</dependency>
 	</dependencies>
 
 	<modules>
 		<module>taintain-base</module>
+		<module>tiantian-music</module>
 	</modules>
 </project>

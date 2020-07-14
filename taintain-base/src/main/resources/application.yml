@@ -4,11 +4,27 @@ server:
   servlet:
     context-path: /tiantian_blog
 
-spring:
-  # 选择加载不同环境的配置文件
-  profiles:
-    active: dev
-
 #配置日志文件
 logging:
   config: classpath:log/logback-spring.xml
+
+#spring
+#spring:
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    #redis连接超时时间（毫秒）
+#    timeout: 5000
+#    jedis:
+#      pool:
+#       #连接池最大空闲连接（负值代表没有限制）
+#        max-idle: 8
+#        min-idle: 0
+#       #连接池最大连接数
+#        max-active: 8
+#        max-wait: -1
+#    #配置集群节点,配置后不需要配置host,port
+#    #cluster:
+#      #nodes: 127.0.0.1:6381,127.0.0.1:6382,127.0.0.1:6383,127.0.0.1:6384,127.0.0.1:6385,127.0.0.1:6386
+#  messages:
+#    basename: i18n.i18n
