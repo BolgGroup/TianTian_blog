@@ -7,7 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TaintainBaseApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TaintainBaseApplication.class, args);
+		try {
+			SpringApplication.run(TaintainBaseApplication.class, args);
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }

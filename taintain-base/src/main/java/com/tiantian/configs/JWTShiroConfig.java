@@ -1,21 +1,20 @@
 package com.tiantian.configs;
 
 import com.tiantian.utils.realm.JWTRealm;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Slf4j
 public class JWTShiroConfig {
 
     /**
@@ -23,66 +22,55 @@ public class JWTShiroConfig {
      */
     @Bean("jwtRealm")
     public Realm jwtShiroRealm() {
-        JWTRealm jwtRealm = new JWTRealm();
-        return jwtRealm;
+        return new JWTRealm();
     }
 
-    /**
-     * 注册shiro的Filter，拦截请求
-     */
     @Bean
-    public FilterRegistrationBean<Filter> filterRegistrationBean(SecurityManager securityManager) throws Exception {
-        FilterRegistrationBean<Filter> filterRegistration = new FilterRegistrationBean<Filter>();
-        filterRegistration.setFilter((Filter) shiroFilter(securityManager).getObject());
-        filterRegistration.addInitParameter("targetFilterLifecycle", "true");
-        filterRegistration.setAsyncSupported(true);
-        filterRegistration.setEnabled(true);
-        filterRegistration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC);
-
-        return filterRegistration;
+    @ConditionalOnMissingBean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator defaultAAP = new DefaultAdvisorAutoProxyCreator();
+        defaultAAP.setProxyTargetClass(true);
+        return defaultAAP;
     }
 
-    @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
+
+    //权限管理，配置主要是Realm的管理认证
+    @Bean
+    public SecurityManager securityManager() {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(jwtShiroRealm());
+        return securityManager;
+    }
+
+    //Filter工厂，设置对应的过滤条件和跳转条件
+    @Bean
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-
-        // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // 设置自定义拦截器
-        Map<String, Filter> filterMap = shiroFilterFactoryBean.getFilters();
-        shiroFilterFactoryBean.setFilters(filterMap);
-
-        // setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的"/login.jsp"页面 或 "/login" 映射
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        // 设置无权限时跳转的 url;
-        // shiroFilterFactoryBean.setUnauthorizedUrl("/notRole");
-        // 设置拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/imgcode", "noSessionCreation,anon");// 验证码
-        filterChainDefinitionMap.put("/", "noSessionCreation,anon");// 开放登陆接口
-        filterChainDefinitionMap.put("/login", "noSessionCreation,anon");// 开放登陆接口
-        // 配置记住我或认证通过可以访问的地址
-        // 开发时使用记住我功能时开放下面这行代码
-        // filterChainDefinitionMap.put("/**", "user");
-
+        Map<String, String> map = new HashMap<>();
         // swagger 相关代码
-        filterChainDefinitionMap.put("/swagger-ui.html", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/swagger-resources/**", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/v2/**", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/csrf", "noSessionCreation,anon");
-        // druid监控台 需要使用session
-        filterChainDefinitionMap.put("/druid/**", "anon");
-        // actuator接口，后期可能需要加入JWT权限控制
-        filterChainDefinitionMap.put("/actuator/**", "noSessionCreation,anon");
-        filterChainDefinitionMap.put("/**", "noSessionCreation,authcToken");
-
-        // 未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
-        log.info("Shiro拦截器工厂类注入成功");
+        map.put("/swagger-ui.html", "noSessionCreation,anon");
+        map.put("/webjars/springfox-swagger-ui/**", "noSessionCreation,anon");
+        map.put("/swagger-resources/**", "noSessionCreation,anon");
+        map.put("/v2/**", "noSessionCreation,anon");
+        map.put("/csrf", "noSessionCreation,anon");
+        //登出
+        map.put("/logout", "logout");
+        //对所有用户认证
+        map.put("/**", "authc");
+        //登录
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        //首页
+        shiroFilterFactoryBean.setSuccessUrl("/index");
+        //错误页面，认证不通过跳转
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }
-
 }
