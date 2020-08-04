@@ -1,6 +1,5 @@
 package com.tiantian.controller;
 
-import com.tiantian.utils.token.JWTToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -19,18 +18,13 @@ public class LoginController {
     @GetMapping("/login")
     @ResponseBody
     public String login(){
-        try {
-            String username = "admin";
-            String password = "123456";
-            JWTToken jwtToken = new JWTToken(username,password);
-            SecurityUtils.getSubject().login(jwtToken);
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-        }
         return "login ok";
     }
 
-    //注解验角色和权限
+    /**
+     *  注解验角色和权限
+     * @return String
+     */
     @RequestMapping("/index")
     public String index() {
         return "index!";
