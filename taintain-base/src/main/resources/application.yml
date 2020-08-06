@@ -7,55 +7,33 @@ server:
 #配置日志文件
 logging:
   config: classpath:log/logback-spring.xml
-  level: info
 
 spring:
-  datasource:
-#    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    druid:
-      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-      username: root
-      password: 666666
-      initial-size: 10
-      max-active: 100
-      min-idle: 10
-      max-wait: 60000
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      #validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        login-username: admin
-        login-password: admin
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
+  servlet:
+      multipart:
+                 # 上传文件总的最大值
+        max-request-size: 10MB
+                 # 单个文件的最大值
+        max-file-size: 10MB
+  profiles:
+#   修改对应环境就可以使用对应的日志
+    active: dev #,mysql 可切换数据库种类
+  #   自定义yml文件
+    include: user-config
 
   #redis配置
-#  redis:
-#    database: 0
-#    host: 127.0.0.1
-#    lettuce:
-#      pool:
-#        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
-#        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
-#        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
-#        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
-#      shutdown-timeout: 100ms
-#    password: ''
-#    port: 6379
+  redis:
+    database: 0
+    host: 127.0.0.1
+    lettuce:
+      pool:
+        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 100ms
+    password: ''
+    port: 6379
 
 #mybatis plus设置
 mybatis-plus:

@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tiantian.constant.CommonConstant;
+import com.tiantian.entity.TbUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -66,6 +67,40 @@ public class JwtUtil {
         // 附带username信息
         return JWT.create().withClaim("username", username).withExpiresAt(date).sign(algorithm);
 
+    }
+
+    /**
+     * 生成签名,expireTime后过期
+     *
+     * @param user 用户
+     * @param secret  密码
+     * @param time     过期时间s
+     * @return 加密的token
+     */
+    public static String sign(TbUser user, String secret, long time) {
+        try {
+            Date date = new Date(System.currentTimeMillis() + time * 1000);
+            // String[] roles = user.getRoleList().toArray(new
+            // String[user.getRoleList().size()]);
+            // JWT中存放的信息有：userid
+            return JWT.create().withClaim("id", user.getUserId())
+                    /*
+                     * .withClaim("dept", user.getDeptCode()) .withClaim("name", user.getUserName())
+                     * .withClaim("dept", user.getDeptCode()) .withArrayClaim("roles", roles)
+                     */
+                    .withExpiresAt(date).withIssuedAt(new Date()).sign(JwtUtil.getAlgorithm(secret));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private static Algorithm getAlgorithm(String secret) {
+        /*
+         * KeyPair keyPair = RSAUtil.getKeyPair(keyPath); return
+         * Algorithm.RSA256((RSAPublicKey) keyPair.getPublic(), (RSAPrivateKey)
+         * keyPair.getPrivate());
+         */
+        return Algorithm.HMAC256(secret);
     }
 
     /**
