@@ -17,7 +17,7 @@ spring:
         max-file-size: 10MB
   profiles:
 #   修改对应环境就可以使用对应的日志
-    active: dev,mysql 可切换数据库种类
+    active: dev,mysql # 可切换数据库种类
   #   自定义yml文件
     include: user-config
 

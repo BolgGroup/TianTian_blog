@@ -50,6 +50,13 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.png", "anon");
         filterChainDefinitionMap.put("/**/*.ico", "anon");
 
+        // swagger 相关代码 此处不加则无法在swagger页面自动注入token
+        filterChainDefinitionMap.put("/swagger-ui.html", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/v2/**", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/csrf", "noSessionCreation,anon");
+
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/user/test", "anon"); //测试
 
