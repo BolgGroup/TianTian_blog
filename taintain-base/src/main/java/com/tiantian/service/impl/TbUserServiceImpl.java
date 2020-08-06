@@ -1,9 +1,12 @@
 package com.tiantian.service.impl;
 
 import com.tiantian.entity.TbUser;
+import com.tiantian.mapper.TbUserMapper;
 import com.tiantian.service.TbUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Set;
 
 /**
@@ -12,9 +15,12 @@ import java.util.Set;
 @Service
 public class TbUserServiceImpl implements TbUserService {
 
+    @Autowired
+    private TbUserMapper tbUserMapper;
+
     @Override
-    public TbUser getUserByName(String username) {
-        return null;
+    public TbUser getUserById(String userId) {
+        return tbUserMapper.getUserById(userId);
     }
 
     @Override

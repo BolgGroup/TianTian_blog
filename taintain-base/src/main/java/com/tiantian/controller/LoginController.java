@@ -21,13 +21,4 @@ public class LoginController {
         return "login ok";
     }
 
-    /**
-     *  注解验角色和权限
-     * @return String
-     */
-    @RequestMapping("/index")
-    public String index() {
-        return "index!";
-    }
-
 }

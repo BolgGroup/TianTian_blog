@@ -100,20 +100,20 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     public TbUser checkUserTokenIsEffect(String token) throws AuthenticationException {
         // 解密获得username，用于和数据库进行对比
-        String username = JwtUtil.getUsername(token);
-        if (username == null) {
+        String userId = JwtUtil.getUserId(token);
+        if (userId == null) {
             throw new AuthenticationException("token非法无效!");
         }
 
         // 查询用户信息
         TbUser loginUser = new TbUser();
-        TbUser tbUser = tbUserService.getUserByName(username);
+        TbUser tbUser = tbUserService.getUserById(userId);
         if (tbUser == null) {
             throw new AuthenticationException("用户不存在!");
         }
 
         // 校验token是否超时失效 & 或者账号密码是否错误
-        if (!jwtTokenRefresh(token, username, tbUser.getPwd())) {
+        if (!jwtTokenRefresh(token, userId, tbUser.getPwd())) {
             throw new AuthenticationException("Token失效请重新登录!");
         }
 

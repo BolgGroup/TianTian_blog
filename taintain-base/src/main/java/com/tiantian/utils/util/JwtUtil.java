@@ -43,12 +43,12 @@ public class JwtUtil {
     /**
      * 获得token中的信息无需secret解密也能获得
      *
-     * @return token中包含的用户名
+     * @return token中包含的用户id
      */
-    public static String getUsername(String token) {
+    public static String getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("username").asString();
+            return jwt.getClaim("id").asString();
         } catch (JWTDecodeException e) {
             return null;
         }
@@ -112,7 +112,7 @@ public class JwtUtil {
      */
     public static String getUserNameByToken(HttpServletRequest request) throws Exception {
         String accessToken = request.getHeader(CommonConstant.ACCESS_TOKEN);
-        String username = getUsername(accessToken);
+        String username = getUserId(accessToken);
         if (CommonUtils.isEmpty(username)) {
             throw new Exception("未获取到用户");
         }
@@ -149,6 +149,6 @@ public class JwtUtil {
 
     public static void main(String[] args) {
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjUzMzY1MTMsInVzZXJuYW1lIjoiYWRtaW4ifQ.xjhud_tWCNYBOg_aRlMgOdlZoWFFKB_givNElHNw3X0";
-        System.out.println(JwtUtil.getUsername(token));
+        System.out.println(JwtUtil.getUserId(token));
     }
 }
