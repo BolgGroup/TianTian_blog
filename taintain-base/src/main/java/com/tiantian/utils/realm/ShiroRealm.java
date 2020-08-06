@@ -135,18 +135,18 @@ public class ShiroRealm extends AuthorizingRealm {
      * 5、当该用户这次请求jwt在生成的token值已经超时，并在cache中不存在对应的k，则表示该用户账户空闲超时，返回用户信息已失效，请重新登录。
      * 6、每次当返回为true情况下，都会给Response的Header中设置Authorization，该Authorization映射的v为cache对应的v值。
      * 7、注：当前端接收到Response的Header中的Authorization值会存储起来，作为以后请求token使用
-     * 参考方案：https://blog.csdn.net/qq394829044/article/details/82763936
      *
-     * @param userName
+     * @param token
+     * @param userId
      * @param passWord
-     * @return
+     * @return boolean
      */
-    public boolean jwtTokenRefresh(String token, String userName, String passWord) {
+    private boolean jwtTokenRefresh(String token, String userId, String passWord) {
         String cacheToken = String.valueOf(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
         if (CommonUtils.isNotEmpty(cacheToken)) {
             // 校验token有效性
-            if (!JwtUtil.verify(cacheToken, userName, passWord)) {
-                String newAuthorization = JwtUtil.sign(userName, passWord);
+            if (!JwtUtil.verify(cacheToken, userId, passWord)) {
+                String newAuthorization = JwtUtil.sign(userId, passWord);
                 redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, newAuthorization);
                 // 设置超时时间
                 redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME / 1000);

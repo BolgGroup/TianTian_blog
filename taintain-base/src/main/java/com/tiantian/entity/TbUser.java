@@ -29,16 +29,16 @@ public class TbUser implements Serializable {
     private String userName;
 
     /**
-     * 最后登陆时间
-     */
-    @TableField("LAST_LOGIN_TIME")
-    private Date lastLoginTime;
-
-    /**
      * 用户密码(MD5)
      */
     @TableField("PWD")
     private String pwd;
+
+    /**
+     * 加密盐值
+     */
+    @TableField("SALT")
+    private String salt;
 
     /**
      * 10正常;20冻结;
@@ -46,16 +46,4 @@ public class TbUser implements Serializable {
     @TableField("STATUS")
     private String status;
 
-    private String status_name;
-
-    /**
-     * 页面分格，1.默认，2.现代
-     */
-    @TableField("USER_STYLE")
-    private String userStyle;
-
-    @TableField("TYPE")
-    private String type;
-
-    private String ip;
 }
