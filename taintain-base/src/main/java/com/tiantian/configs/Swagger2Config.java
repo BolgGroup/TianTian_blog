@@ -42,7 +42,7 @@ public class Swagger2Config {
         String jwt = JwtUtil.sign(tbUser, secret, 3600);
         ParameterBuilder tokenPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
-        tokenPar.name("authToken").description("authToken").modelRef(new ModelRef("string")).parameterType("query")
+        tokenPar.name("Access-Token").description("Access-Token").modelRef(new ModelRef("string")).parameterType("header")
                 .required(true).defaultValue(jwt).build();
         pars.add(tokenPar.build());
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())

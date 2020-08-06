@@ -1,6 +1,27 @@
+#spring
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/TianTian_Blog?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-    username: tiantian
-    password: 666666
+    dynamic:
+      primary: default #设置默认数据源
+      druid: #以下是全局默认值，可以全局更改
+        initial-size: 0
+        max-active: 8
+        min-idle: 2
+        max-wait: -1
+        min-evictable-idle-time-millis: 30000
+        max-evictable-idle-time-millis: 30000
+        time-between-eviction-runs-millis: 0
+        validation-query: select 1 FROM DUAL
+        validation-query-timeout: -1
+        test-on-borrow: false
+        test-on-return: false
+        test-while-idle: true
+        pool-prepared-statements: true
+        filters: stat,wall
+        share-prepared-statements: true
+      datasource:
+        default:
+          username: tiantian
+          password: "tiantian%123"
+          url: jdbc:mysql://localhost:3306/tiantian?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          driver-class-name: com.mysql.jdbc.Driver

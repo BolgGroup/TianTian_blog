@@ -17,7 +17,7 @@ spring:
         max-file-size: 10MB
   profiles:
 #   修改对应环境就可以使用对应的日志
-    active: dev #,mysql 可切换数据库种类
+    active: dev,mysql 可切换数据库种类
   #   自定义yml文件
     include: user-config
 
@@ -37,9 +37,10 @@ spring:
 
 #mybatis plus设置
 mybatis-plus:
-  type-aliases-package: cn.gathub.entity
+  type-aliases-package: cn.gathub.entity,com.tiantian.entity
   mapper-locations: classpath:mapper/*.xml
   global-config:
+    refresh: true
     banner: false
     db-config:
       #主键类型
