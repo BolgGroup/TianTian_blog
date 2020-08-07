@@ -2,8 +2,8 @@ package com.tiantian.utils.realm;
 
 
 import com.tiantian.constant.CommonConstant;
-import com.tiantian.entity.TbUser;
-import com.tiantian.service.TbUserService;
+import com.tiantian.entity.SysUser;
+import com.tiantian.service.SysUserService;
 import com.tiantian.utils.token.JwtToken;
 import com.tiantian.utils.util.CommonUtils;
 import com.tiantian.utils.util.JwtUtil;
@@ -38,7 +38,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
     @Lazy
-    private TbUserService tbUserService;
+    private SysUserService sysUserService;
 
     /**
      * 必须重写此方法，不然Shiro会报错
@@ -57,20 +57,20 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         log.info("————权限认证 [ roles、permissions]————");
-        TbUser tbUser = null;
+        SysUser sysUser = null;
         String username = null;
         if (principals != null) {
-            tbUser = (TbUser) principals.getPrimaryPrincipal();
-            username = tbUser.getUserName();
+            sysUser = (SysUser) principals.getPrimaryPrincipal();
+            username = sysUser.getUserName();
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
         // 设置用户拥有的角色集合，比如“admin,test”
-        Set<String> roleSet = tbUserService.getUserRolesSet(username);
+        Set<String> roleSet = sysUserService.getUserRolesSet(username);
         info.setRoles(roleSet);
 
         // 设置用户拥有的权限集合，比如“sys:role:add,sys:user:add”
-        Set<String> permissionSet = tbUserService.getUserPermissionsSet(username);
+        Set<String> permissionSet = sysUserService.getUserPermissionsSet(username);
         info.addStringPermissions(permissionSet);
         return info;
     }
@@ -89,8 +89,8 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("token为空!");
         }
         // 校验token有效性
-        TbUser tbUser = this.checkUserTokenIsEffect(token);
-        return new SimpleAuthenticationInfo(tbUser, token, getName());
+        SysUser sysUser = this.checkUserTokenIsEffect(token);
+        return new SimpleAuthenticationInfo(sysUser, token, getName());
     }
 
     /**
@@ -98,7 +98,7 @@ public class ShiroRealm extends AuthorizingRealm {
      *
      * @param token
      */
-    public TbUser checkUserTokenIsEffect(String token) throws AuthenticationException {
+    private SysUser checkUserTokenIsEffect(String token) throws AuthenticationException {
         // 解密获得username，用于和数据库进行对比
         String userId = JwtUtil.getUserId(token);
         if (userId == null) {
@@ -106,23 +106,23 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         // 查询用户信息
-        TbUser loginUser = new TbUser();
-        TbUser tbUser = tbUserService.getUserById(userId);
-        if (tbUser == null) {
+        SysUser loginUser = new SysUser();
+        SysUser sysUser = sysUserService.getUserById(userId);
+        if (sysUser == null) {
             throw new AuthenticationException("用户不存在!");
         }
 
         // 校验token是否超时失效 & 或者账号密码是否错误
-        if (!jwtTokenRefresh(token, userId, tbUser.getPwd())) {
+        if (!jwtTokenRefresh(token, userId, sysUser.getPwd())) {
             throw new AuthenticationException("Token失效请重新登录!");
         }
 
         // 判断用户状态
-        if (!"0".equals(tbUser.getStatus())) {
+        if (!"0".equals(sysUser.getStatus())) {
             throw new AuthenticationException("账号已被删除,请联系管理员!");
         }
 
-        BeanUtils.copyProperties(tbUser, loginUser);
+        BeanUtils.copyProperties(sysUser, loginUser);
         return loginUser;
     }
 
@@ -142,18 +142,18 @@ public class ShiroRealm extends AuthorizingRealm {
      * @return boolean
      */
     private boolean jwtTokenRefresh(String token, String userId, String passWord) {
-        String cacheToken = String.valueOf(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
+        String cacheToken = String.valueOf(redisUtil.get(CommonConstant.JWT + userId));
         if (CommonUtils.isNotEmpty(cacheToken)) {
             // 校验token有效性
             if (!JwtUtil.verify(cacheToken, userId, passWord)) {
                 String newAuthorization = JwtUtil.sign(userId, passWord);
-                redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, newAuthorization);
+                redisUtil.set(CommonConstant.JWT + userId, newAuthorization);
                 // 设置超时时间
-                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME / 1000);
+                redisUtil.expire(CommonConstant.JWT + userId, JwtUtil.EXPIRE_TIME / 1000);
             } else {
-                redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, cacheToken);
+                redisUtil.set(CommonConstant.JWT + userId, cacheToken);
                 // 设置超时时间
-                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME / 1000);
+                redisUtil.expire(CommonConstant.JWT + userId, JwtUtil.EXPIRE_TIME / 1000);
             }
             return true;
         }

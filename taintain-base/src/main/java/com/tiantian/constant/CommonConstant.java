@@ -23,7 +23,7 @@ public interface CommonConstant {
      */
     public static final int TOKEN_EXPIRE_TIME = 3600; //3600秒即是一小时
 
-    public static final String PREFIX_USER_TOKEN = "PREFIX_USER_TOKEN_";
+    public static final String JWT = "JWT_";
 
     /**
      * 0：一级菜单

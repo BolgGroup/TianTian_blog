@@ -5,7 +5,7 @@
  */
 package com.tiantian.configs;
 
-import com.tiantian.entity.TbUser;
+import com.tiantian.entity.SysUser;
 import com.tiantian.utils.util.Guid;
 import com.tiantian.utils.util.JwtUtil;
 import com.tiantian.utils.util.RedisUtil;
@@ -35,11 +35,11 @@ public class Swagger2Config {
 
     @Bean
     public Docket createRestApi(){
-        TbUser tbUser = new TbUser();
-        tbUser.setUserId("admin");
+        SysUser sysUser = new SysUser();
+        sysUser.setUserId("admin");
         String secret = Guid.newGuid();
         redisUtil.set("JWT_admin", secret);
-        String jwt = JwtUtil.sign(tbUser, secret, 3600);
+        String jwt = JwtUtil.sign(sysUser, secret, 3600);
         ParameterBuilder tokenPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
         tokenPar.name("Access-Token").description("Access-Token").modelRef(new ModelRef("string")).parameterType("header")

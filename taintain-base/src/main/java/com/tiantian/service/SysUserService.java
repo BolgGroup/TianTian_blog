@@ -1,13 +1,13 @@
 package com.tiantian.service;
 
-import com.tiantian.entity.TbUser;
+import com.tiantian.entity.SysUser;
 
 import java.util.Set;
 
 /**
  * @author qi_bingo
  */
-public interface TbUserService {
+public interface SysUserService {
 
     /**
      * 通过用户id获取用户信息
@@ -15,7 +15,7 @@ public interface TbUserService {
      * @param userId 用户名
      * @return 用户信息
      */
-    TbUser getUserById(String userId);
+    SysUser getUserById(String userId);
 
     /**
      * 通过用户id获取用户角色集合

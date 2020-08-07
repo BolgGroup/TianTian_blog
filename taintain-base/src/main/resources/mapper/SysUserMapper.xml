@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tiantian.mapper.TbUserMapper">
+<mapper namespace="com.tiantian.mapper.SysUserMapper">
 
-    <resultMap id="TbUserMap" type="com.tiantian.entity.TbUser">
+    <resultMap id="TbUserMap" type="com.tiantian.entity.SysUser">
         <result property="userId" column="USER_ID"/>
         <result property="userName" column="USER_NAME"/>
         <result property="pwd" column="PWD"/>
@@ -11,6 +11,6 @@
     </resultMap>
 
     <select id="getUserById" resultMap="TbUserMap">
-        SELECT tb_user.user_id,tb_user.user_name,tb_user.real_name,tb_user.PWD,tb_user.salt,tb_user.STATUS FROM tb_user WHERE user_id = #{user_id}
+        SELECT sys_user.user_id,sys_user.user_name,sys_user.PWD,sys_user.salt,sys_user.STATUS FROM sys_user WHERE user_id = #{user_id}
     </select>
 </mapper>

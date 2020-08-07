@@ -6,7 +6,6 @@
 		<groupId>com.tiantian</groupId>
 		<artifactId>TianTian_blog</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>tiantian-music</artifactId>
 	<name>tiantian-music</name>

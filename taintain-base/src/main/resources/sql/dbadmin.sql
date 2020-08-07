@@ -1,4 +1,4 @@
-CREATE USER `tiantian`@`%` IDENTIFIED BY 'tiantian@blog';
+CREATE USER `tiantian`@`%` IDENTIFIED BY 'tiantian2020@Blog';
 
 GRANT Alter, Alter Routine, Create, Create Routine, Create Temporary Tables, Create View, Delete, Drop, Event, Execute, Grant Option, Index, Insert, Lock Tables, References, Select, Show View, Trigger, Update ON `tiantian`.* TO `tiantian`@`%`;
 

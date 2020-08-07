@@ -6,7 +6,6 @@
 		<groupId>com.tiantian</groupId>
 		<artifactId>TianTian_blog</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/>
 	</parent>
 
 	<artifactId>taintain-base</artifactId>
@@ -68,15 +67,17 @@
 		</dependency>
 
 		<!-- mybatis-plus -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-annotation</artifactId>
-            <version>3.1.2</version>
-        </dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>3.1.2</version>
 		</dependency>
-    </dependencies>
+
+		<!-- 多数据源切换插件 -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+	</dependencies>
 </project>

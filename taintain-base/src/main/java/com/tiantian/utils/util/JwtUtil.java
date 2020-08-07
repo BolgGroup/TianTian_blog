@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tiantian.constant.CommonConstant;
-import com.tiantian.entity.TbUser;
+import com.tiantian.entity.SysUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -77,7 +77,7 @@ public class JwtUtil {
      * @param time     过期时间s
      * @return 加密的token
      */
-    public static String sign(TbUser user, String secret, long time) {
+    public static String sign(SysUser user, String secret, long time) {
         try {
             Date date = new Date(System.currentTimeMillis() + time * 1000);
             // String[] roles = user.getRoleList().toArray(new

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan(value = {"cn.gathub.mapper"})
 public class MybatisPlusConfig {
 
     /**

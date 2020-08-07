@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -17,8 +16,8 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("TB_USER")
-public class TbUser implements Serializable {
+@TableName("SYS_USER")
+public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

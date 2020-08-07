@@ -1,26 +1,25 @@
 package com.tiantian.service.impl;
 
-import com.tiantian.entity.TbUser;
-import com.tiantian.mapper.TbUserMapper;
-import com.tiantian.service.TbUserService;
+import com.tiantian.entity.SysUser;
+import com.tiantian.mapper.SysUserMapper;
+import com.tiantian.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Set;
 
 /**
  * @author qi_bingo
  */
 @Service
-public class TbUserServiceImpl implements TbUserService {
+public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
-    private TbUserMapper tbUserMapper;
+    private SysUserMapper sysUserMapper;
 
     @Override
-    public TbUser getUserById(String userId) {
-        return tbUserMapper.getUserById(userId);
+    public SysUser getUserById(String userId) {
+        return sysUserMapper.getUserById(userId);
     }
 
     @Override
