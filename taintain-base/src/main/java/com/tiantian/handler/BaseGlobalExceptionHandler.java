@@ -17,10 +17,9 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**
+ * @author qi_bingo
  * @desc 全局异常处理基础类
  * 
- * @author lyq
- * @since 2019-10-15
  */
 @Slf4j
 public class BaseGlobalExceptionHandler {

@@ -11,7 +11,6 @@
 	<artifactId>taintain-base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>taintain-base</name>
-	<packaging>pom</packaging>
 	<description>天天博客基础模块</description>
 
 	<dependencies>
@@ -85,4 +84,26 @@
             <version>2.0.1</version>
         </dependency>
     </dependencies>
+
+	<build>
+		<plugins>
+			<!--spring boot repackage，依赖 maven-jar-plugin 打包的jar包 重新打包成 spring boot 的jar包-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- 指定程序的主类 -->
+				<configuration>
+					<mainClass>com.tiantian.TaintainBaseApplication</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

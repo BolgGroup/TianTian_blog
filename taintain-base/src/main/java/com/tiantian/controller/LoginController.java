@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.tiantian.constant.CommonConstant.*;
+
 
 /**
  * @author qi_bingo
@@ -30,9 +32,6 @@ public class LoginController {
 
     @Autowired
     private RedisUtil redisUtil;
-
-    // token持续时间（秒）
-    private static final int tokenLastTime = 1800;
 
     @GetMapping("/login")
     @ApiOperation(value = "登录接口", notes = "根据用户名密码登录", httpMethod = "GET")
@@ -55,7 +54,7 @@ public class LoginController {
             //2. 登录成功，保存用户信息
             String secret = Guid.newGuid();
             redisUtil.set("JWT_admin", secret);
-            return JwtUtil.sign(sysUser, secret, tokenLastTime);
+            return JwtUtil.sign(sysUser, secret, TOKEN_LAST_TIME);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException(e.getMessage());

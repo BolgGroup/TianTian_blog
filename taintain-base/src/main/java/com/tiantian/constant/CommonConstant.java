@@ -1,5 +1,8 @@
 package com.tiantian.constant;
 
+/**
+ * @author qi_bingo
+ */
 public interface CommonConstant {
 
     /**
@@ -21,9 +24,11 @@ public interface CommonConstant {
     /**
      * 登录用户令牌缓存KEY前缀
      */
-    public static final int TOKEN_EXPIRE_TIME = 3600; //3600秒即是一小时
+    public static final int TOKEN_EXPIRE_TIME = 3600;
 
     public static final String JWT = "JWT_";
+
+    public static final int TOKEN_LAST_TIME = 1800;
 
     /**
      * 0：一级菜单
