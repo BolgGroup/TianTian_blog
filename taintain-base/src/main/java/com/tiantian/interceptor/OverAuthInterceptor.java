@@ -16,7 +16,6 @@ public class OverAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("OverAuthInterceptor拦截器");
         return true;
     }
 }

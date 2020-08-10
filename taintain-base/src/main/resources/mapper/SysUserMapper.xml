@@ -13,4 +13,18 @@
     <select id="getUserById" resultMap="TbUserMap">
         SELECT sys_user.user_id,sys_user.user_name,sys_user.PWD,sys_user.salt,sys_user.STATUS FROM sys_user WHERE user_id = #{user_id}
     </select>
+
+    <select id="getUserList" resultMap="TbUserMap" parameterType="string">
+        SELECT sys_user.user_id,sys_user.user_name,sys_user.PWD,sys_user.salt,sys_user.STATUS FROM sys_user
+        <where>
+            <if test="userId != '' and userId != null">
+                user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <update id="resetPwd" parameterType="SysUser">
+        UPDATE sys_user SET pwd = #{pwd}, salt = #{salt} where user_id = #{userId}
+    </update>
+
 </mapper>

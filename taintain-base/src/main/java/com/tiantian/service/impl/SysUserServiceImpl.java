@@ -1,5 +1,7 @@
 package com.tiantian.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tiantian.entity.SysUser;
 import com.tiantian.mapper.SysUserMapper;
 import com.tiantian.service.SysUserService;
@@ -30,5 +32,15 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Set<String> getUserPermissionsSet(String username) {
         return null;
+    }
+
+    @Override
+    public IPage<SysUser> getUserList(Page<SysUser> page, String userId) {
+        return sysUserMapper.getUserList(page, userId);
+    }
+
+    @Override
+    public void resetPwd(SysUser sysUser) {
+        sysUserMapper.resetPwd(sysUser);
     }
 }

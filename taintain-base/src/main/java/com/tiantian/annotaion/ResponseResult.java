@@ -6,6 +6,9 @@ import com.tiantian.result.Result;
 
 import java.lang.annotation.*;
 
+/**
+ * @author qi_bingo
+ */
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
