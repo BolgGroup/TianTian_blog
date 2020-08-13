@@ -142,16 +142,15 @@ public class ShiroRealm extends AuthorizingRealm {
      * @return boolean
      */
     private boolean jwtTokenRefresh(String token, String userId, String passWord) {
-        String cacheToken = String.valueOf(redisUtil.get(CommonConstant.JWT + userId));
-        if (CommonUtils.isNotEmpty(cacheToken)) {
+        if (CommonUtils.isNotEmpty(token)) {
             // 校验token有效性
-            if (!JwtUtil.verify(cacheToken, userId, passWord)) {
+            if (!JwtUtil.verify(token, userId, passWord)) {
                 String newAuthorization = JwtUtil.sign(userId, passWord);
                 redisUtil.set(CommonConstant.JWT + userId, newAuthorization);
                 // 设置超时时间
                 redisUtil.expire(CommonConstant.JWT + userId, JwtUtil.EXPIRE_TIME / 1000);
             } else {
-                redisUtil.set(CommonConstant.JWT + userId, cacheToken);
+                redisUtil.set(CommonConstant.JWT + userId, token);
                 // 设置超时时间
                 redisUtil.expire(CommonConstant.JWT + userId, JwtUtil.EXPIRE_TIME / 1000);
             }

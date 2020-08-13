@@ -5,6 +5,7 @@ import com.tiantian.utils.token.JwtToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 鉴权登录拦截器
- **/
+ *
+ * @author qi_bingo*/
 @Slf4j
 public class JwtFilter extends BasicHttpAuthenticationFilter {
 
@@ -30,6 +32,9 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         try {
+            if (this.isLoginRequest(request, response)){
+                return true;
+            }
             executeLogin(request, response);
             return true;
         } catch (Exception e) {
