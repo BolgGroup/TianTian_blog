@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -34,6 +35,10 @@ public class LoginController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    // 密钥文件位置
+    @Value("${security.keypath}")
+    private String keyPath;
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "根据用户名密码登录", httpMethod = "POST")
@@ -72,5 +77,18 @@ public class LoginController {
             redisUtil.del("JWT_secret" + coreUser.getUserId());
             SecurityUtils.getSubject().logout();
         }
+    }
+
+    @GetMapping(value = "/user/info")
+    public SysUser getUser() {
+        // shiro获得用户对象
+        return (SysUser) SecurityUtils.getSubject().getPrincipal();
+    }
+
+    @GetMapping(value = "/publickey")
+    public String getPublicKey() {
+        // 传递RSA公钥
+//        String publicKey = RSAUtil.getPublicKey(keyPath);
+        return "";
     }
 }
