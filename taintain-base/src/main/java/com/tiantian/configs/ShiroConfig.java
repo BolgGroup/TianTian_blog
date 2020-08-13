@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * @author qi_bingo
  * @description: shiro 配置类
  */
 
@@ -59,7 +60,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/csrf", "noSessionCreation,anon");
 
         filterChainDefinitionMap.put("/druid/**", "anon");
-        filterChainDefinitionMap.put("/user/test", "anon"); //测试
+        filterChainDefinitionMap.put("/user/test", "anon");
 
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new HashMap<String, Filter>(1);

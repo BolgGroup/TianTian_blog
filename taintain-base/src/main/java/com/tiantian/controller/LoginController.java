@@ -4,11 +4,9 @@ import com.tiantian.annotaion.ResponseResult;
 import com.tiantian.entity.SysUser;
 import com.tiantian.enums.ResultCode;
 import com.tiantian.result.BusinessException;
+import com.tiantian.result.CommonMap;
 import com.tiantian.service.SysUserService;
-import com.tiantian.utils.util.Guid;
-import com.tiantian.utils.util.JwtUtil;
-import com.tiantian.utils.util.PasswordUtil;
-import com.tiantian.utils.util.RedisUtil;
+import com.tiantian.utils.util.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -43,21 +41,21 @@ public class LoginController {
             @ApiImplicitParam(name = "userId", value = "账号", dataType = "string", required = true, paramType = "query"),
             @ApiImplicitParam(name = "imageCode", value = "验证码", dataType = "string", required = true, paramType = "query"),
             @ApiImplicitParam(name = "pwd", value = "密码", dataType = "string", required = true, paramType = "query")})
-    public String login(String userId, String imageCode, String pwd) {
+    public String login(@RequestBody CommonMap commonMap) {
         try {
             //1. 校验用户是否有效
-            SysUser sysUser = sysUserService.getUserById(userId);
+            SysUser sysUser = sysUserService.getUserById(commonMap.get("userId"));
             if (sysUser == null) {
                 throw new BusinessException(ResultCode.LOGIN_NULL_ERROR);
             }
             //密码加密,后期有前端，则在前端加密
-            String password = PasswordUtil.encrypt(pwd, sysUser.getSalt());
+            String password = PasswordUtil.encrypt(commonMap.get("pwd"), sysUser.getSalt());
             if (!password.equals(sysUser.getPwd())) {
                 throw new BusinessException(ResultCode.LOGIN_ERROR);
             }
             //2. 登录成功，保存用户信息
             String secret = Guid.newGuid();
-            redisUtil.set("JWT_admin" + sysUser.getUserId(), secret);
+            redisUtil.set("JWT_secret" + sysUser.getUserId(), secret);
             return JwtUtil.sign(sysUser, secret, TOKEN_LAST_TIME);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +69,7 @@ public class LoginController {
         SysUser coreUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         if (coreUser != null) {
             // 用户登出日志
-            redisUtil.del("JWT_admin" + coreUser.getUserId());
+            redisUtil.del("JWT_secret" + coreUser.getUserId());
             SecurityUtils.getSubject().logout();
         }
     }

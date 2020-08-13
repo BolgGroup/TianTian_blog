@@ -164,7 +164,7 @@ public class CommonMap implements Map<String, Object>, Serializable, Cloneable {
 
 	@Override
 	public Object put(String key, Object value) {
-		return this.targetMap.put(key.toLowerCase(), value);
+		return this.targetMap.put(key, value);
 	}
 
 	@Override

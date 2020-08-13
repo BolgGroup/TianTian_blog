@@ -27,6 +27,7 @@ import java.util.Set;
 
 /**
  * 用户登录鉴权和获取用户授权
+ * @author qi_bingo
  */
 @Component
 @Slf4j
