@@ -38,7 +38,7 @@ public class Swagger2Config {
         SysUser sysUser = new SysUser();
         sysUser.setUserId("admin");
         String secret = Guid.newGuid();
-        redisUtil.set("JWT_admin", secret);
+        redisUtil.set("JWT_admin_swagger", secret);
         String jwt = JwtUtil.sign(sysUser, secret, 3600);
         ParameterBuilder tokenPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
