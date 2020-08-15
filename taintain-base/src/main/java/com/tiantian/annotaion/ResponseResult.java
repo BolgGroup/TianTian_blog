@@ -6,7 +6,7 @@ import com.tiantian.result.Result;
 
 import java.lang.annotation.*;
 
-/**
+/** @description 接口返回结果增强  会通过拦截器拦截后放入标记，在ResponseResultHandler 进行结果处理
  * @author qi_bingo
  */
 @Target({ ElementType.METHOD, ElementType.TYPE })

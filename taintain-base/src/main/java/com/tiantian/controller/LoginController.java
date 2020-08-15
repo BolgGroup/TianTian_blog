@@ -6,26 +6,22 @@ import com.tiantian.enums.ResultCode;
 import com.tiantian.result.BusinessException;
 import com.tiantian.result.CommonMap;
 import com.tiantian.service.SysUserService;
-import com.tiantian.utils.util.*;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+import com.tiantian.utils.util.Guid;
+import com.tiantian.utils.util.JwtUtil;
+import com.tiantian.utils.util.PasswordUtil;
+import com.tiantian.utils.util.RedisUtil;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
-import static com.tiantian.constant.CommonConstant.*;
+import static com.tiantian.constant.CommonConstant.TOKEN_LAST_TIME;
 
 
 /**
  * @author qi_bingo
  */
 @RestController
-@Slf4j
 @ResponseResult
 @RequestMapping("base")
 public class LoginController {
@@ -37,17 +33,12 @@ public class LoginController {
     private RedisUtil redisUtil;
 
     // 密钥文件位置
-    @Value("${security.keypath}")
-    private String keyPath;
+//    @Value("${security.keypath}")
+//    private String keyPath;
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "根据用户名密码登录", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "账号", dataType = "string", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "imageCode", value = "验证码", dataType = "string", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "pwd", value = "密码", dataType = "string", required = true, paramType = "query")})
     public String login(@RequestBody CommonMap commonMap) {
-        try {
             //1. 校验用户是否有效
             SysUser sysUser = sysUserService.getUserById(commonMap.get("userId"));
             if (sysUser == null) {
@@ -62,10 +53,6 @@ public class LoginController {
             String secret = Guid.newGuid();
             redisUtil.set("JWT_secret" + sysUser.getUserId(), secret);
             return JwtUtil.sign(sysUser, secret, TOKEN_LAST_TIME);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessException(e.getMessage());
-        }
     }
 
     @PostMapping("/logout")
