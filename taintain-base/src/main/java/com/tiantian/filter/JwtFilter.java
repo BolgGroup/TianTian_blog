@@ -3,9 +3,12 @@ package com.tiantian.filter;
 import com.tiantian.constant.CommonConstant;
 import com.tiantian.utils.token.JwtToken;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.springframework.http.HttpStatus;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -17,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 鉴权登录拦截器
  *
- * @author qi_bingo*/
+ * @author qi_bingo
+ */
 @Slf4j
 @Component
 public class JwtFilter extends BasicHttpAuthenticationFilter {
@@ -32,22 +36,42 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        try {
-            if (this.isLoginRequest(request, response)){
-                return true;
-            }
-            executeLogin(request, response);
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        if (this.isLoginRequest(request, response))
             return true;
+        Boolean afterFiltered = (Boolean) (request.getAttribute("jwtShiroFilter.FILTERED"));
+        if (BooleanUtils.isTrue(afterFiltered))
+            return true;
+        boolean allowed = false;
+        try {
+            allowed = this.executeLogin(request, response);
+        } catch (IllegalStateException e) {
+            HttpServletRequest httpRequest = WebUtils.toHttp(request);
+            log.error(httpRequest.getRequestURI() + ": Not found any token");
+            httpResponse.setStatus(HttpStatus.SC_NO_CONTENT);
         } catch (Exception e) {
-            throw new AuthenticationException("Token失效请重新登录");
+            log.error("Validate token fail, error:{}", e.getMessage());
         }
+        return allowed || super.isPermissive(mappedValue);
+    }
+
+
+    @Override
+    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
+                                     ServletResponse response) {
+        log.error("Validate token fail, token:{}, error:{}", token.toString(), e.getMessage());
+        // throw new BusinessException("身份TOKEN认证失败，请重新登录");
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        // httpResponse.setHeader("token-failure", "validate-fail");
+        httpResponse.setStatus(HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION);
+        return false;
     }
 
     /**
      *
      */
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(CommonConstant.ACCESS_TOKEN);
 
@@ -71,7 +95,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
         // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
         if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            httpServletResponse.setStatus(HttpStatus.OK.value());
+            httpServletResponse.setStatus(HttpStatus.SC_OK);
             return false;
         }
         return super.preHandle(request, response);

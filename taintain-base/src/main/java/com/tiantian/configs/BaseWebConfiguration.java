@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @description 配置统一返回体拦截器
  */
 @Configuration
-public class CoreWebConfiguration implements WebMvcConfigurer {
+public class BaseWebConfiguration implements WebMvcConfigurer {
 
     //统一返回体拦截器
     @Autowired

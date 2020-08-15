@@ -26,6 +26,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tiantian.constant.CommonConstant.SWAGGER_TOKEN;
+
 @Configuration
 @EnableSwagger2
 public class Swagger2Config {
@@ -38,7 +40,7 @@ public class Swagger2Config {
         SysUser sysUser = new SysUser();
         sysUser.setUserId("admin");
         String secret = Guid.newGuid();
-        redisUtil.set("JWT_admin_swagger", secret);
+        redisUtil.set(SWAGGER_TOKEN, secret);
         String jwt = JwtUtil.sign(sysUser, secret, 3600);
         ParameterBuilder tokenPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();

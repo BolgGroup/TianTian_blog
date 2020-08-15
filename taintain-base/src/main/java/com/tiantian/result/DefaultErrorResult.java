@@ -13,8 +13,7 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 
 /**
- * @desc 默认全局错误返回结果 备注：该返回信息是spring
- *       boot的默认异常时返回结果{@link }，目前也是我们服务的默认的错误返回结果
+ * @desc 默认全局错误返回结果 备注：该返回信息是springboot的默认异常时返回结果{@link }，目前也是我们服务的默认的错误返回结果
  * 
  */
 @Builder

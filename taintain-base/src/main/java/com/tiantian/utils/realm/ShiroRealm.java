@@ -25,8 +25,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+import static com.tiantian.constant.CommonConstant.JWT_LOGIN;
+
 /**
  * 用户登录鉴权和获取用户授权
+ *
  * @author qi_bingo
  */
 @Component
@@ -114,8 +117,8 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         // 校验token是否超时失效 & 或者账号密码是否错误
-        if (!jwtTokenRefresh(token, userId, sysUser.getPwd())) {
-            throw new AuthenticationException("Token失效请重新登录!");
+        if (!jwtTokenRefresh(userId, sysUser.getPwd())) {
+            throw new IllegalStateException("Token失效请重新登录!");
         }
 
         // 判断用户状态
@@ -137,23 +140,23 @@ public class ShiroRealm extends AuthorizingRealm {
      * 6、每次当返回为true情况下，都会给Response的Header中设置Authorization，该Authorization映射的v为cache对应的v值。
      * 7、注：当前端接收到Response的Header中的Authorization值会存储起来，作为以后请求token使用
      *
-     * @param token
      * @param userId
      * @param passWord
      * @return boolean
      */
-    private boolean jwtTokenRefresh(String token, String userId, String passWord) {
+    private boolean jwtTokenRefresh(String userId, String passWord) {
+        String token = String.valueOf(redisUtil.get(JWT_LOGIN + userId));
         if (CommonUtils.isNotEmpty(token)) {
             // 校验token有效性
             if (!JwtUtil.verify(token, userId, passWord)) {
                 String newAuthorization = JwtUtil.sign(userId, passWord);
-                redisUtil.set(CommonConstant.JWT + userId, newAuthorization);
+                redisUtil.set(CommonConstant.JWT_LOGIN + userId, newAuthorization);
                 // 设置超时时间
-                redisUtil.expire(CommonConstant.JWT + userId, JwtUtil.EXPIRE_TIME / 1000);
+                redisUtil.expire(CommonConstant.JWT_LOGIN + userId, JwtUtil.EXPIRE_TIME / 1000);
             } else {
-                redisUtil.set(CommonConstant.JWT + userId, token);
+                redisUtil.set(CommonConstant.JWT_LOGIN + userId, token);
                 // 设置超时时间
-                redisUtil.expire(CommonConstant.JWT + userId, JwtUtil.EXPIRE_TIME / 1000);
+                redisUtil.expire(CommonConstant.JWT_LOGIN + userId, JwtUtil.EXPIRE_TIME / 1000);
             }
             return true;
         }

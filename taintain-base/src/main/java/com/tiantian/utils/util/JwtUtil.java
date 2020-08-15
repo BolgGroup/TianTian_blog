@@ -10,6 +10,7 @@ import com.tiantian.entity.SysUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -117,6 +118,17 @@ public class JwtUtil {
             throw new Exception("未获取到用户");
         }
         return username;
+    }
+
+    /**
+     * token是否过期
+     *
+     * @return true：过期
+     */
+    public static boolean isTokenExpired(String token) {
+        Date now = Calendar.getInstance().getTime();
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getExpiresAt().before(now);
     }
 
     /**

@@ -26,7 +26,9 @@ public interface CommonConstant {
      */
     public static final int TOKEN_EXPIRE_TIME = 3600;
 
-    public static final String JWT = "JWT_";
+    public static final String SWAGGER_TOKEN = "JWT_admin_swagger";
+
+    public static final String JWT_LOGIN = "JWT_secret_";
 
     public static final int TOKEN_LAST_TIME = 1800;
 

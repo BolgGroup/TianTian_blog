@@ -2,6 +2,7 @@ package com.tiantian.configs;
 
 import com.tiantian.filter.JwtFilter;
 import com.tiantian.utils.realm.ShiroRealm;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
@@ -25,6 +26,7 @@ import java.util.Map;
  */
 
 @Configuration
+@Slf4j
 public class ShiroConfig {
 
     /**
@@ -45,6 +47,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/base/logout", "anon");
         filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/error/*", "anon");
         filterChainDefinitionMap.put("/**/*.js", "anon");
         filterChainDefinitionMap.put("/**/*.css", "anon");
         filterChainDefinitionMap.put("/**/*.html", "anon");
@@ -70,9 +73,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**", "jwt");
 
         // 未授权界面返回JSON
-        shiroFilterFactoryBean.setUnauthorizedUrl("/sys/common/403");
-        shiroFilterFactoryBean.setLoginUrl("/sys/common/403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        log.info("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
     }
 

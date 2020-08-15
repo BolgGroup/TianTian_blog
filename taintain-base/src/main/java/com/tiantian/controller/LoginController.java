@@ -15,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.tiantian.constant.CommonConstant.JWT_LOGIN;
 import static com.tiantian.constant.CommonConstant.TOKEN_LAST_TIME;
 
 
@@ -51,7 +52,7 @@ public class LoginController {
             }
             //2. 登录成功，保存用户信息
             String secret = Guid.newGuid();
-            redisUtil.set("JWT_secret" + sysUser.getUserId(), secret);
+            redisUtil.set(JWT_LOGIN + sysUser.getUserId(), secret,TOKEN_LAST_TIME);
             return JwtUtil.sign(sysUser, secret, TOKEN_LAST_TIME);
     }
 
@@ -61,7 +62,7 @@ public class LoginController {
         SysUser coreUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         if (coreUser != null) {
             // 用户登出日志
-            redisUtil.del("JWT_secret" + coreUser.getUserId());
+            redisUtil.del(JWT_LOGIN + coreUser.getUserId());
             SecurityUtils.getSubject().logout();
         }
     }
