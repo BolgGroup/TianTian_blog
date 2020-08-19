@@ -1,7 +1,7 @@
 package com.tiantian.filter;
 
 import com.tiantian.constant.CommonConstant;
-import com.tiantian.utils.token.JwtToken;
+import com.tiantian.utils.security.token.JwtToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.BooleanUtils;
@@ -37,11 +37,13 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
-        if (this.isLoginRequest(request, response))
+        if (this.isLoginRequest(request, response)) {
             return true;
+        }
         Boolean afterFiltered = (Boolean) (request.getAttribute("jwtShiroFilter.FILTERED"));
-        if (BooleanUtils.isTrue(afterFiltered))
+        if (BooleanUtils.isTrue(afterFiltered)) {
             return true;
+        }
         boolean allowed = false;
         try {
             allowed = this.executeLogin(request, response);

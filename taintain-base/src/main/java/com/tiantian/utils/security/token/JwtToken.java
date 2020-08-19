@@ -1,4 +1,4 @@
-package com.tiantian.utils.token;
+package com.tiantian.utils.security.token;
 
 import org.apache.shiro.authc.AuthenticationToken;
 

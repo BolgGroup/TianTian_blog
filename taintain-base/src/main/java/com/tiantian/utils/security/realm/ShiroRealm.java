@@ -1,12 +1,12 @@
-package com.tiantian.utils.realm;
+package com.tiantian.utils.security.realm;
 
 
 import com.tiantian.constant.CommonConstant;
 import com.tiantian.entity.SysUser;
 import com.tiantian.service.SysUserService;
-import com.tiantian.utils.token.JwtToken;
+import com.tiantian.utils.security.token.JwtToken;
 import com.tiantian.utils.util.CommonUtils;
-import com.tiantian.utils.util.JwtUtil;
+import com.tiantian.utils.security.JwtUtil;
 import com.tiantian.utils.util.RedisUtil;
 import com.tiantian.utils.util.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;

@@ -33,6 +33,10 @@ spring:
     password: ''
     port: 6379
 
+security:
+# keypath: "C:/security"
+ keypath: "/home/TianTian_J"
+
 #mybatis plus设置
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

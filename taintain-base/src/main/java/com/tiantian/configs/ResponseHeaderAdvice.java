@@ -13,7 +13,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//这个类是为了解决拦截器中对response设置了header后，在返回responseBody的方法中丢失该header的问题
+/**
+ * @desc 这个类是为了解决拦截器中对response设置了header后，在返回responseBody的方法中丢失该header的问题
+ * @author qi_bingo
+ */
 @ControllerAdvice
 public class ResponseHeaderAdvice implements ResponseBodyAdvice<Object> {
     @Override
@@ -40,19 +43,22 @@ public class ResponseHeaderAdvice implements ResponseBodyAdvice<Object> {
             String origin = request.getHeader("Origin");
             if (origin == null) {
                 String referer = request.getHeader("Referer");
-                if (referer != null)
+                if (referer != null) {
                     origin = referer.substring(0, referer.indexOf("/", 7));
+                }
             }
             response.setHeader("Access-Control-Allow-Origin", origin);
         }
 
         String allowHeaders = "Access-Control-Allow-Headers";
-        if (!response.containsHeader(allowHeaders))
+        if (!response.containsHeader(allowHeaders)) {
             response.setHeader(allowHeaders, request.getHeader(allowHeaders));
+        }
 
         String allowMethods = "Access-Control-Allow-Methods";
-        if (!response.containsHeader(allowMethods))
+        if (!response.containsHeader(allowMethods)) {
             response.setHeader(allowMethods, "GET,POST,OPTIONS,HEAD,PUT,DELETE");
+        }
 
         // 重点
         String exposeHeaders = "access-control-expose-headers";

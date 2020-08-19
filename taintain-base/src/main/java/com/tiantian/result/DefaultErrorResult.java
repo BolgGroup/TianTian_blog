@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 
 /**
+ * @author qi_bingo
  * @desc 默认全局错误返回结果 备注：该返回信息是springboot的默认异常时返回结果{@link }，目前也是我们服务的默认的错误返回结果
  * 
  */
@@ -22,7 +23,7 @@ import java.util.Date;
 @Data
 public class DefaultErrorResult implements Result {
 
-	private static final long serialVersionUID = 1899083570489722793L;
+	private static final long serialVersionUID = 1899083570489756659L;
 
 	/**
 	 * HTTP响应状态码 {@link org.springframework.http.HttpStatus}

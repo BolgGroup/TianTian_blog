@@ -3,6 +3,9 @@ package com.tiantian.result;
 
 import com.tiantian.enums.ResultCode;
 
+/**
+ * @author qi_bingo
+ */
 public class CaptchaErrorException extends BusinessException {
 
     /**

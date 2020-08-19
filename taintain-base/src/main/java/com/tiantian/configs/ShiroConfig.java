@@ -1,15 +1,17 @@
 package com.tiantian.configs;
 
 import com.tiantian.filter.JwtFilter;
-import com.tiantian.utils.realm.ShiroRealm;
+import com.tiantian.utils.security.realm.ShiroRealm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.mgt.SessionStorageEvaluator;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.mgt.DefaultWebSessionStorageEvaluator;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +56,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.jpg", "anon");
         filterChainDefinitionMap.put("/**/*.png", "anon");
         filterChainDefinitionMap.put("/**/*.ico", "anon");
+        filterChainDefinitionMap.put("/imgcode", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/base/publickey", "noSessionCreation,anon");
 
         // swagger 相关代码 此处不加则无法在swagger页面自动注入token
         filterChainDefinitionMap.put("/swagger-ui.html", "noSessionCreation,anon");
@@ -77,6 +81,17 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         log.info("Shiro拦截器工厂类注入成功");
         return shiroFilterFactoryBean;
+    }
+
+    /**
+     * 禁用session, 不保存用户登录状态。保证每次请求都重新认证。
+     * 需要注意的是，如果用户代码里调用Subject.getSession()还是可以用session，如果要完全禁用，要配合下面的noSessionCreation的Filter来实现
+     */
+    @Bean
+    protected SessionStorageEvaluator sessionStorageEvaluator() {
+        DefaultWebSessionStorageEvaluator sessionStorageEvaluator = new DefaultWebSessionStorageEvaluator();
+        sessionStorageEvaluator.setSessionStorageEnabled(false);
+        return sessionStorageEvaluator;
     }
 
     @Bean("securityManager")

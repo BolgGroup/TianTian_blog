@@ -4,15 +4,17 @@ import com.tiantian.result.*;
 import org.springframework.http.HttpStatus;
 
 
+/**
+ * @author qi_bingo
+ */
+
 public enum ExceptionEnum {
 
 	/**
 	 * 无效参数
 	 */
 	PARAMETER_INVALID(ParameterInvalidException.class, HttpStatus.BAD_REQUEST, ResultCode.PARAM_IS_INVALID),
-	CAPTCHA_ERROR(CaptchaErrorException.class, HttpStatus.BAD_REQUEST, ResultCode.CAPTCHA_ERROR),
-	FILE_IS_NULL_ERROR(FileNullException.class, HttpStatus.BAD_REQUEST, ResultCode.FILE_IS_NULL_ERROR),
-	FILE_UPLOAD_ERROR(FileUploadException.class, HttpStatus.BAD_REQUEST, ResultCode.FILE_UPLOAD_ERROR);
+	CAPTCHA_ERROR(CaptchaErrorException.class, HttpStatus.BAD_REQUEST, ResultCode.CAPTCHA_ERROR);
 
 	private Class<? extends BusinessException> eClass;
 

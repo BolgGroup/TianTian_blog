@@ -23,5 +23,5 @@ spring:
         default:
           username: tiantian
           password: "tiantian2020@Blog"
-          url: jdbc:mysql://106.12.156.48:3306/tiantian?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+          url: jdbc:mysql://122.51.250.144:3306/tiantian?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
           driver-class-name: com.mysql.jdbc.Driver

@@ -7,7 +7,7 @@ package com.tiantian.configs;
 
 import com.tiantian.entity.SysUser;
 import com.tiantian.utils.util.Guid;
-import com.tiantian.utils.util.JwtUtil;
+import com.tiantian.utils.security.JwtUtil;
 import com.tiantian.utils.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -24,8 +24,11 @@ import java.util.Arrays;
 
 import static java.util.Collections.singletonMap;
 
+/**@desc 开启缓存支持
+ * @author qi_bingo
+ */
 @Configuration
-@EnableCaching // 开启缓存支持
+@EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Resource
@@ -66,10 +69,14 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
         RedisSerializer<?> stringSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(stringSerializer);// key序列化
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);// value序列化
-        redisTemplate.setHashKeySerializer(stringSerializer);// Hash key序列化
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);// Hash value序列化
+        // key序列化
+        redisTemplate.setKeySerializer(stringSerializer);
+        // value序列化
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        // Hash key序列化
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        // Hash value序列化
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
@@ -84,11 +91,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration redisCacheConfiguration = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
-        // 以锁写入的方式创建RedisCacheWriter对象
-        //RedisCacheWriter writer = RedisCacheWriter.lockingRedisCacheWriter(factory);
-        // 创建默认缓存配置对象
-        /* 默认配置，设置缓存有效期 1小时*/
-        //RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1));
         /* 配置test的超时时间为120s*/
         RedisCacheManager cacheManager = RedisCacheManager.builder(RedisCacheWriter.lockingRedisCacheWriter(factory)).cacheDefaults(redisCacheConfiguration)
                 .withInitialCacheConfigurations(singletonMap("test", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(120)).disableCachingNullValues()))

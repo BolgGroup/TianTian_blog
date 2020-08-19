@@ -7,8 +7,7 @@ import com.tiantian.entity.SysUser;
 import com.tiantian.enums.ResultCode;
 import com.tiantian.result.BusinessException;
 import com.tiantian.service.SysUserService;
-import com.tiantian.utils.util.PasswordUtil;
-import io.swagger.annotations.Api;
+import com.tiantian.utils.security.PasswordUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author qi_bingo

@@ -1,4 +1,4 @@
-package com.tiantian.utils.util;
+package com.tiantian.utils.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -7,6 +7,8 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tiantian.constant.CommonConstant;
 import com.tiantian.entity.SysUser;
+import com.tiantian.utils.util.CommonUtils;
+import com.tiantian.utils.util.SpringContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -97,7 +99,7 @@ public class JwtUtil {
 
     private static Algorithm getAlgorithm(String secret) {
         /*
-         * KeyPair keyPair = RSAUtil.getKeyPair(keyPath); return
+         * KeyPair keyPair = RsaUtil.getKeyPair(keyPath); return
          * Algorithm.RSA256((RSAPublicKey) keyPair.getPublic(), (RSAPrivateKey)
          * keyPair.getPrivate());
          */

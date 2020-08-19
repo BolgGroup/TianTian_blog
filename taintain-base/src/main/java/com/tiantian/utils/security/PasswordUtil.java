@@ -1,4 +1,4 @@
-package com.tiantian.utils.util;
+package com.tiantian.utils.security;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;

@@ -10,6 +10,9 @@ public enum ResultCode {
     SUCCESS(1, "成功"),
     PARAM_IS_INVALID(2, "参数无效"),
     SYSTEM_INTERNAL_ERROR(9999, "接口内部错误"),
+    PUBLIC_KEY_ERROR(3, "获取公钥异常"),
+    PRIVATE_KEY_ERROR(4, "获取私钥异常"),
+    RSA_DECRYPT_ERROR(5, "RSA解密异常"),
     /* 100~199区间表示系统 */
     CAPTCHA_ERROR(100, "验证码错误"), LOGIN_ERROR(101, "用户名或密码错误"), LOGIN_NULL_ERROR(102, "账号不存在"),
     RESET_PASSWORD_ERROR(103, "重置密码异常"),
