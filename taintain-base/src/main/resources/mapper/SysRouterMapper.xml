@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tiantian.mapper.SysRouterMapper">
+
+    <resultMap id="sysRouterMap" type="com.tiantian.entity.SysRouter">
+
+    </resultMap>
+
+    <resultMap id="sysRoleMap" type="com.tiantian.entity.SysRole">
+        <result column="ROLE_ID" property="roleId"/>
+        <result column="ROLE_NAME" property="roleName"/>
+        <result column="STATUS" property="status"/>
+        <result column="ROLE_CODE" property="roleCode"/>
+    </resultMap>
+
+    <select id="getUserRoutersByRoles" resultMap="sysRouterMap" parameterType="list">
+        SELECT
+            sys_router.PRIV_ID,
+            sys_router.PRIV_CODE,
+            sys_router.PARENT_ID,
+            sys_router.PRIV_NAME,
+            sys_router.PRIV_URL,
+            sys_router.IS_MENU,
+            sys_router.SORT_ID,
+            sys_router.STATUS,
+            sys_router.COMPONENT,
+            sys_router.REDIRECT,
+            sys_router.HIDDEN,
+            sys_router.ICON,
+            sys_router.ALIAS
+        FROM
+            sys_role_router
+            INNER JOIN sys_router ON sys_role_router.priv_id = sys_router.PRIV_ID
+        WHERE 
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator="or">
+            sys_role_router.role_id = #{item}
+        </foreach>
+    </select>
+    <select id="getUserRolesByUserId" resultType="string">
+        SELECT
+            sys_role.ROLE_ID
+        FROM
+            sys_user_role
+            INNER JOIN sys_role ON sys_role.ROLE_ID = sys_user_role.role_id
+        WHERE
+            sys_user_role.user_id = #{userId} AND sys_role.status = 1
+    </select>
+</mapper>
