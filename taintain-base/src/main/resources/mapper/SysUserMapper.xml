@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tiantian.mapper.SysUserMapper">
 
-    <resultMap id="TbUserMap" type="com.tiantian.entity.SysUser">
+    <resultMap id="sysUserMap" type="com.tiantian.entity.SysUser">
         <result property="userId" column="USER_ID"/>
         <result property="userName" column="USER_NAME"/>
         <result property="pwd" column="PWD"/>
@@ -10,11 +10,11 @@
         <result property="status" column="STATUS"/>
     </resultMap>
 
-    <select id="getUserById" resultMap="TbUserMap">
+    <select id="getUserById" resultMap="sysUserMap">
         SELECT sys_user.user_id,sys_user.user_name,sys_user.PWD,sys_user.salt,sys_user.STATUS FROM sys_user WHERE user_id = #{user_id}
     </select>
 
-    <select id="getUserList" resultMap="TbUserMap" parameterType="string">
+    <select id="getUserList" resultMap="sysUserMap" parameterType="string">
         SELECT sys_user.user_id,sys_user.user_name,sys_user.PWD,sys_user.salt,sys_user.STATUS FROM sys_user
         <where>
             <if test="userId != '' and userId != null">
@@ -23,7 +23,7 @@
         </where>
     </select>
 
-    <update id="resetPwd" parameterType="SysUser">
+    <update id="resetPwd" parameterType="com.tiantian.entity.SysUser">
         UPDATE sys_user SET pwd = #{pwd}, salt = #{salt} where user_id = #{userId}
     </update>
 

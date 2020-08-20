@@ -1,6 +1,7 @@
 package com.tiantian.controller;
 
 import com.tiantian.annotaion.ResponseResult;
+import com.tiantian.entity.SysRouter;
 import com.tiantian.entity.SysUser;
 import com.tiantian.enums.ResultCode;
 import com.tiantian.result.BusinessException;
@@ -11,6 +12,7 @@ import com.tiantian.utils.util.Guid;
 import com.tiantian.utils.security.JwtUtil;
 import com.tiantian.utils.security.PasswordUtil;
 import com.tiantian.utils.util.RedisUtil;
+import com.tiantian.utils.util.RouterUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -20,9 +22,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.security.KeyPair;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.tiantian.constant.CommonConstant.JWT_LOGIN;
 import static com.tiantian.constant.CommonConstant.TOKEN_LAST_TIME;
@@ -113,5 +114,22 @@ public class LoginController {
         } catch (Exception e) {
             throw new BusinessException(ResultCode.PUBLIC_KEY_ERROR);
         }
+    }
+
+    /**
+     * 获取用户动态路由表
+     */
+    @PostMapping("/router")
+    public List<SysRouter> router() {
+        List<SysRouter> routerList = new ArrayList<SysRouter>();
+        try {
+            SysRouter router = RouterUtil.getPrivil(20);
+            routerList = (router == null) ? null : router.getChildren();
+        } catch (Exception e) {
+            // TODO需返回权限信息
+            e.printStackTrace();
+            throw new BusinessException(e.getMessage());
+        }
+        return routerList;
     }
 }
