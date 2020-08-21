@@ -1,5 +1,7 @@
 package com.tiantian.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -16,31 +18,77 @@ public class SysRouter implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    /**
+     * 权限ID
+     */
+    @TableId("PRIV_ID")
+    private int privId;
 
-    private String name;
+    /**
+     * 权限编码
+     */
+    @TableField("PRIV_CODE")
+    private String privCode;
 
-    private String path = "";
-
-    /** 默认组件是layout */
-    private String component;
-
-    private String redirect;
-
-    /** 当alias字段为@时，该路由作为父路由的别名使用 */
-    private String alias;
-
-    private String icon;
-
+    /**
+     * 上级权限ID
+     */
+    @TableField("PARENT_ID")
     private int parentId;
 
+    /**
+     * 权限名称
+     */
+    @TableField("PRIV_NAME")
+    private String privName;
+
+    /**
+     * url
+     */
+    @TableField("PRIV_URL")
+    private String privUrl;
+
+    /**
+     * 是否菜单
+     */
+    @TableField("IS_MENU")
     private boolean isMenu;
 
-    private boolean hidden;
-
+    /**
+     * 排序
+     */
+    @TableField("SORT_ID")
     private int sortId;
 
+    /**
+     * 状态10启用20冻结
+     */
+    @TableField("STATUS")
     private int status;
+
+    /**
+     * 前端组件
+     */
+    @TableField("COMPONENT")
+    private String component;
+
+    /**
+     * 重定向
+     */
+    @TableField("REDIRECT")
+    private String redirect;
+
+    /**
+     * 是否隐藏路由
+     */
+    @TableField("HIDDEN")
+    private int hidden;
+
+    /**
+     * 别名 为'@'时指向父路由
+     */
+    @TableField("ALIAS")
+    private String alias;
 
     private boolean hasMenuChild = false;
 

@@ -41,7 +41,7 @@ public class RouterUtil {
 		Map<Integer, SysRouter> routerMap = new HashMap<Integer, SysRouter>();
 		// 构建权限树
 		for (SysRouter router : routerList) {
-			routerMap.put(router.getId(), router);
+			routerMap.put(router.getPrivId(), router);
 		}
 		for (SysRouter router : routerList) {
 			SysRouter parent = routerMap.get(router.getParentId());
@@ -55,7 +55,7 @@ public class RouterUtil {
 		if (root == null) {
 			return null;
 		}
-		if (parentId == root.getId()) {
+		if (parentId == root.getPrivId()) {
 			return root;
 		}
 
@@ -71,7 +71,7 @@ public class RouterUtil {
 	 */
 	private static SysRouter getChild(SysRouter parent, int privId) {
 		for (SysRouter child : parent.getChildren()) {
-			if (child.getId() == privId) {
+			if (child.getPrivId() == privId) {
 				return child;
 			}
 			SysRouter grandChild = getChild(child, privId);
