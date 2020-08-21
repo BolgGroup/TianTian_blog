@@ -11,7 +11,7 @@
 	<artifactId>taintain-base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>taintain-base</name>
-	<description>天天博客基础模块</description>
+	<description>天天博客基础模块1</description>
 
 	<dependencies>
 
