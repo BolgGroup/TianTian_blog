@@ -4,17 +4,17 @@
 
     <resultMap id="sysRouterMap" type="com.tiantian.entity.SysRouter">
         <result column="PRIV_ID" property="privId"/>
-        <result column="PRIV_CODE" property="privCode"/>
+        <result column="PRIV_CODE" property="name"/>
         <result column="PRIV_NAME" property="privName"/>
         <result column="PARENT_ID" property="parentId"/>
-        <result column="PRIV_URL" property="privUrl"/>
+        <result column="PRIV_URL" property="path" typeHandler="com.tiantian.utils.util.EmptyStringIfNull"/>
         <result column="IS_MENU" property="isMenu"/>
         <result column="SORT_ID" property="sortId"/>
         <result column="STATUS" property="status"/>
         <result column="COMPONENT" property="component"/>
-        <result column="REDIRECT" property="redirect"/>
+        <result column="REDIRECT" property="redirect" typeHandler="com.tiantian.utils.util.EmptyStringIfNull"/>
         <result column="HIDDEN" property="hidden"/>
-        <result column="ALIAS" property="alias"/>
+        <result column="ALIAS" property="alias" typeHandler="com.tiantian.utils.util.EmptyStringIfNull"/>
     </resultMap>
 
     <resultMap id="sysRoleMap" type="com.tiantian.entity.SysRole">

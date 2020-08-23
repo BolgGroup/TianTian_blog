@@ -28,7 +28,7 @@ public class SysRouter implements Serializable {
      * 权限编码
      */
     @TableField("PRIV_CODE")
-    private String privCode;
+    private String name;
 
     /**
      * 上级权限ID
@@ -46,7 +46,7 @@ public class SysRouter implements Serializable {
      * url
      */
     @TableField("PRIV_URL")
-    private String privUrl;
+    private String path;
 
     /**
      * 是否菜单
