@@ -5,7 +5,6 @@
     <resultMap id="sysRouterMap" type="com.tiantian.entity.SysRouter">
         <result column="PRIV_ID" property="privId"/>
         <result column="PRIV_CODE" property="name"/>
-        <result column="PRIV_NAME" property="privName"/>
         <result column="PARENT_ID" property="parentId"/>
         <result column="PRIV_URL" property="path" typeHandler="com.tiantian.utils.util.EmptyStringIfNull"/>
         <result column="IS_MENU" property="isMenu"/>
@@ -15,6 +14,10 @@
         <result column="REDIRECT" property="redirect" typeHandler="com.tiantian.utils.util.EmptyStringIfNull"/>
         <result column="HIDDEN" property="hidden"/>
         <result column="ALIAS" property="alias" typeHandler="com.tiantian.utils.util.EmptyStringIfNull"/>
+        <collection property="meta" ofType="SysRouterMeta">
+            <result column="PRIV_NAME" property="title"/>
+            <result column="ICON" property="icon"/>
+        </collection>
     </resultMap>
 
     <resultMap id="sysRoleMap" type="com.tiantian.entity.SysRole">
@@ -37,7 +40,8 @@
         sys_router_temp.COMPONENT,
         sys_router_temp.REDIRECT,
         sys_router_temp.HIDDEN,
-        sys_router_temp.ALIAS
+        sys_router_temp.ALIAS,
+        sys_router_temp.ICON
         FROM
             sys_role_router
             INNER JOIN sys_router_temp ON sys_role_router.priv_id = sys_router_temp.PRIV_ID

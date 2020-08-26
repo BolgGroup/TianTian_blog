@@ -37,10 +37,9 @@ public class SysRouter implements Serializable {
     private int parentId;
 
     /**
-     * 权限名称
+     * 前端菜单名
      */
-    @TableField("PRIV_NAME")
-    private String privName;
+    private SysRouterMeta meta;
 
     /**
      * url
