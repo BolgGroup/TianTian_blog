@@ -76,7 +76,7 @@ public class LoginController {
         } catch (IOException | ClassNotFoundException ce) {
             ce.printStackTrace();
             throw new BusinessException(ResultCode.PRIVATE_KEY_ERROR);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BusinessException(ResultCode.LOGIN_ERROR);
         }
         //4.解密后再次使用MD5加密，与数据库密码进行比对，从而达到双重加密的效果
@@ -122,14 +122,8 @@ public class LoginController {
     @PostMapping("/router")
     public List<SysRouter> router() {
         List<SysRouter> routerList = new ArrayList<SysRouter>();
-        try {
-            SysRouter router = RouterUtil.getPrivil(20);
-            routerList = (router == null) ? null : router.getChildren();
-        } catch (Exception e) {
-            // TODO需返回权限信息
-            e.printStackTrace();
-            throw new BusinessException(e.getMessage());
-        }
+        SysRouter router = RouterUtil.getPrivil(20);
+        routerList = (router == null) ? null : router.getChildren();
         return routerList;
     }
 }
