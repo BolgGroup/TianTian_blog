@@ -1,5 +1,6 @@
 package com.tiantian.mapper;
 
+import com.tiantian.entity.SysMenu;
 import com.tiantian.entity.SysRouter;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface SysRouterMapper {
      * 获取菜单
      * @return 菜单集合
      */
-    List<SysRouter> getAllMenu();
+    List<SysMenu> getAllMenu();
+
+    int getMenuNumberByCode(String privCode);
 }

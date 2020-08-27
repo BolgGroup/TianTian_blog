@@ -20,6 +20,26 @@
         </collection>
     </resultMap>
 
+    <resultMap id="privMap" type="com.tiantian.entity.SysMenu">
+        <id property="privId" column="PRIV_ID" />
+        <!-- 用来构造菜单树，便于管理 -->
+        <result property="parentId" column="PARENT_ID" />
+        <result property="name" column="PRIV_NAME" />
+        <result property="code" column="PRIV_CODE" />
+        <!-- 菜单URL连接 -->
+        <result property="url" column="PRIV_URL" />
+        <!-- 菜单的排序号 -->
+        <result property="sortId" column="SORT_ID" />
+        <!-- 1:菜单；0：权限 -->
+        <result property="isMenu" column="IS_MENU" />
+        <result property="status" column="STATUS" />
+        <result property="component" column="COMPONENT" />
+        <result property="redirect" column="REDIRECT" />
+        <result property="hidden" column="HIDDEN" />
+        <result property="alias" column="ALIAS" />
+        <result property="access" column="ACCESS" />
+    </resultMap>
+
     <resultMap id="sysRoleMap" type="com.tiantian.entity.SysRole">
         <result column="ROLE_ID" property="roleId"/>
         <result column="ROLE_NAME" property="roleName"/>
@@ -59,7 +79,7 @@
         WHERE
             sys_user_role.user_id = #{userId} AND sys_role.status = 1
     </select>
-    <select id="getAllMenu" resultMap="sysRouterMap">
+    <select id="getAllMenu" resultMap="privMap">
         SELECT
         sys_router_temp.PRIV_ID,
         sys_router_temp.PRIV_CODE,
@@ -76,5 +96,8 @@
         sys_router_temp.ICON
         FROM
         sys_router_temp
+    </select>
+    <select id="getMenuNumberByCode" resultType="Integer">
+        select count(*) from CORE_PRIVILEGE p where p.PRIV_CODE = #{privCode}
     </select>
 </mapper>
