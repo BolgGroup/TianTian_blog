@@ -22,4 +22,10 @@ public interface SysRouterMapper {
      * @return
      */
     List<String> getUserRolesByUserId(String userId);
+
+    /**
+     * 获取菜单
+     * @return 菜单集合
+     */
+    List<SysRouter> getAllMenu();
 }

@@ -23,6 +23,8 @@ public class RouterUtil {
 
 	private static RouterUtil routerUtil;
 
+	private static final int ROOT = 10;
+
 	/** 为了让spring注入静态类而做的处理 */
 	@PostConstruct
 	public void init() {
@@ -32,12 +34,16 @@ public class RouterUtil {
 
 	/**
 	 * 查询当前登录用户的所有角色权限
-	 * @param parentId
-	 * @return
+	 * @return 菜单列表
 	 */
 	public static SysRouter getPrivil(int parentId) {
-		// 从数据库中获得当前用户的所有权限
-		List<SysRouter> routerList = routerUtil.sysRouterMapper.getUserRoutersByRoles(getAllRoles());
+		List<SysRouter> routerList = null;
+		if (parentId != 0){
+			// 从数据库中获得当前用户的所有权限
+			routerList = routerUtil.sysRouterMapper.getUserRoutersByRoles(getAllRoles());
+		}else {
+			routerList = routerUtil.sysRouterMapper.getAllMenu();
+		}
 		Map<Integer, SysRouter> routerMap = new HashMap<Integer, SysRouter>();
 		// 构建权限树
 		for (SysRouter router : routerList) {
@@ -51,9 +57,12 @@ public class RouterUtil {
 			}
 		}
 		// 获取根节点
-		SysRouter root = routerMap.get(10);
+		SysRouter root = routerMap.get(ROOT);
 		if (root == null) {
 			return null;
+		}
+		if (parentId == 0){
+			parentId = 20;
 		}
 		if (parentId == root.getPrivId()) {
 			return root;
