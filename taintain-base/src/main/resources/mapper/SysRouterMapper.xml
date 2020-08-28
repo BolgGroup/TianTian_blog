@@ -97,7 +97,4 @@
         FROM
         sys_router_temp
     </select>
-    <select id="getMenuNumberByCode" resultType="Integer">
-        select count(*) from CORE_PRIVILEGE p where p.PRIV_CODE = #{privCode}
-    </select>
 </mapper>

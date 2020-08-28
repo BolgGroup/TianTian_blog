@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tiantian.mapper.SysMenuMapper">
+
+    <resultMap id="privMap" type="com.tiantian.entity.SysMenu">
+        <id property="privId" column="PRIV_ID" />
+        <!-- 用来构造菜单树，便于管理 -->
+        <result property="parentId" column="PARENT_ID" />
+        <result property="name" column="PRIV_NAME" />
+        <result property="code" column="PRIV_CODE" />
+        <!-- 菜单URL连接 -->
+        <result property="url" column="PRIV_URL" />
+        <!-- 菜单的排序号 -->
+        <result property="sortId" column="SORT_ID" />
+        <!-- 1:菜单；0：权限 -->
+        <result property="isMenu" column="IS_MENU" />
+        <result property="status" column="STATUS" />
+        <result property="component" column="COMPONENT" />
+        <result property="redirect" column="REDIRECT" />
+        <result property="hidden" column="HIDDEN" />
+        <result property="alias" column="ALIAS" />
+        <result property="access" column="ACCESS" />
+    </resultMap>
+
+    <select id="getAllMenu" resultMap="privMap">
+        SELECT
+        sys_router.PRIV_ID,
+        sys_router.PRIV_CODE,
+        sys_router.PARENT_ID,
+        sys_router.PRIV_NAME,
+        sys_router.PRIV_URL,
+        sys_router.IS_MENU,
+        sys_router.SORT_ID,
+        sys_router.STATUS,
+        sys_router.COMPONENT,
+        sys_router.REDIRECT,
+        sys_router.HIDDEN,
+        sys_router.ALIAS,
+        sys_router.ICON
+        FROM
+        sys_router
+    </select>
+
+    <select id="getMenuNumberByCode" resultType="Integer">
+        select count(*) from sys_router p where p.PRIV_CODE = #{privCode}
+    </select>
+
+    <insert id="insertMenu" parameterType="SysMenu" useGeneratedKeys="true" keyProperty="privId">
+        INSERT INTO sys_router (
+        parent_id,
+        priv_name,
+        sort_id,
+        is_menu,
+        priv_code,
+        priv_url,
+        STATUS,
+        component,
+        redirect,
+        hidden,
+        alias)
+        VALUES (
+        #{parentId},
+        #{name},
+        #{sortId},
+        #{isMenu},
+        #{code},
+        #{url},
+        #{status},
+        #{component},
+        #{redirect},
+        #{hidden},
+        #{alias})
+    </insert>
+
+    <update id="updateMenu" parameterType="SysMenu">
+        update sys_router set
+        parent_id = #{parentId},
+        priv_name = #{name},
+        sort_id = #{sortId},
+        is_menu = #{isMenu},
+        priv_code = #{code},
+        priv_url = #{url},
+        status = #{status},
+        component = #{component},
+        redirect = #{redirect},
+        <choose>
+            <when test="hidden == 0">
+                hidden = null,
+            </when>
+            <otherwise>
+                hidden = #{hidden},
+            </otherwise>
+        </choose>
+        alias = #{alias}
+        where priv_id = #{privId}
+    </update>
+</mapper>

@@ -30,5 +30,4 @@ public interface SysRouterMapper {
      */
     List<SysMenu> getAllMenu();
 
-    int getMenuNumberByCode(String privCode);
 }

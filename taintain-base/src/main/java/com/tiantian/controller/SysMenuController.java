@@ -2,13 +2,11 @@ package com.tiantian.controller;
 
 import com.tiantian.annotaion.ResponseResult;
 import com.tiantian.entity.SysMenu;
-import com.tiantian.entity.SysRouter;
 import com.tiantian.enums.ResultCode;
 import com.tiantian.result.BusinessException;
-import com.tiantian.result.CommonMap;
-import com.tiantian.utils.util.RouterUtil;
+import com.tiantian.service.SysMenuService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,10 +21,13 @@ import java.util.List;
 @RequestMapping("menu")
 public class SysMenuController {
 
+    @Autowired
+    private SysMenuService sysMenuService;
+
     @GetMapping("/tree")
     public List<SysMenu> getAllMenu(){
         List<SysMenu> routerList = new ArrayList<SysMenu>();
-        SysMenu router = RouterUtil.getMenu();
+        SysMenu router = sysMenuService.getAllMenu();
         routerList = (router == null) ? null : router.getChildren();
         return routerList;
     }
@@ -34,13 +35,13 @@ public class SysMenuController {
     /**
      * 菜单保存
      *
-     * @param params
+     * @param menu
      */
     @PostMapping("save")
-    public void save(@RequestBody CommonMap params) {
+    public void saveMenu(@RequestBody SysMenu menu) {
         try {
-//            int privilegeId = RouterUtil.save(params);
-//            log.info("privilegeId = " + privilegeId);
+            int privilegeId = sysMenuService.saveMenu(menu);
+            log.info("privilegeId = " + privilegeId);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException(ResultCode.SYSTEM_INTERNAL_ERROR);
