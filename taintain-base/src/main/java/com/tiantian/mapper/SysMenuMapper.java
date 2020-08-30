@@ -36,4 +36,11 @@ public interface SysMenuMapper {
      * @param params
      */
     void updateMenu(SysMenu params);
+
+    /**
+     * 根据角色获取菜单
+     * @param roleId
+     * @return
+     */
+    List<SysMenu> roleMenu(String roleId);
 }

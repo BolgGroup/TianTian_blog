@@ -35,7 +35,7 @@ import static com.tiantian.constant.CommonConstant.TOKEN_LAST_TIME;
 @RestController
 @ResponseResult
 @Slf4j
-@RequestMapping("base")
+@RequestMapping("/base")
 public class LoginController {
 
     @Autowired

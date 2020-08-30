@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @ResponseResult
 @Slf4j
-@RequestMapping("menu")
+@RequestMapping("/menu")
 public class SysMenuController {
 
     @Autowired
@@ -37,11 +37,26 @@ public class SysMenuController {
      *
      * @param menu
      */
-    @PostMapping("save")
+    @PostMapping("/save")
     public void saveMenu(@RequestBody SysMenu menu) {
         try {
             int privilegeId = sysMenuService.saveMenu(menu);
             log.info("privilegeId = " + privilegeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException(ResultCode.SYSTEM_INTERNAL_ERROR);
+        }
+    }
+
+    /**
+     * 角色菜单
+     *
+     * @param roleId
+     */
+    @GetMapping("/roleMenu")
+    public List<SysMenu> roleMenu(String roleId) {
+        try {
+            return sysMenuService.roleMenu(roleId);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BusinessException(ResultCode.SYSTEM_INTERNAL_ERROR);

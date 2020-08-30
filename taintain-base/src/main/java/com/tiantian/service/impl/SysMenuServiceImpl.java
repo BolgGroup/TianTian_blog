@@ -68,6 +68,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     }
 
+    @Override
+    public List<SysMenu> roleMenu(String roleId) {
+        return sysMenuMapper.roleMenu(roleId);
+    }
+
     /**
      * 迭代获取菜单
      *

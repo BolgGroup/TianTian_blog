@@ -45,6 +45,30 @@
         select count(*) from sys_router p where p.PRIV_CODE = #{privCode}
     </select>
 
+    <select id="roleMenu" resultMap="privMap" parameterType="string">
+        SELECT
+            sys_router.PRIV_ID,
+            sys_router.PRIV_CODE,
+            sys_router.PARENT_ID,
+            sys_router.PRIV_NAME,
+            sys_router.PRIV_URL,
+            sys_router.IS_MENU,
+            sys_router.SORT_ID,
+            sys_router.STATUS,
+            sys_router.COMPONENT,
+            sys_router.REDIRECT,
+            sys_router.HIDDEN,
+            sys_router.ALIAS,
+            sys_router.ICON
+        FROM
+            sys_role
+        INNER JOIN sys_role_router ON sys_role_router.role_id = sys_role.ROLE_ID
+        INNER JOIN sys_router ON sys_role_router.priv_id = sys_router.PRIV_ID
+        WHERE
+            sys_role.ROLE_ID = #{roleId}
+
+    </select>
+
     <insert id="insertMenu" parameterType="SysMenu" useGeneratedKeys="true" keyProperty="privId">
         INSERT INTO sys_router (
         parent_id,
