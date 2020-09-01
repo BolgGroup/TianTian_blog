@@ -49,22 +49,22 @@
 
     <select id="getUserRoutersByRoles" resultMap="sysRouterMap" parameterType="list">
         SELECT
-        sys_router_temp.PRIV_ID,
-        sys_router_temp.PRIV_CODE,
-        sys_router_temp.PARENT_ID,
-        sys_router_temp.PRIV_NAME,
-        sys_router_temp.PRIV_URL,
-        sys_router_temp.IS_MENU,
-        sys_router_temp.SORT_ID,
-        sys_router_temp.STATUS,
-        sys_router_temp.COMPONENT,
-        sys_router_temp.REDIRECT,
-        sys_router_temp.HIDDEN,
-        sys_router_temp.ALIAS,
-        sys_router_temp.ICON
+        sys_router.PRIV_ID,
+        sys_router.PRIV_CODE,
+        sys_router.PARENT_ID,
+        sys_router.PRIV_NAME,
+        sys_router.PRIV_URL,
+        sys_router.IS_MENU,
+        sys_router.SORT_ID,
+        sys_router.STATUS,
+        sys_router.COMPONENT,
+        sys_router.REDIRECT,
+        sys_router.HIDDEN,
+        sys_router.ALIAS,
+        sys_router.ICON
         FROM
             sys_role_router
-            INNER JOIN sys_router_temp ON sys_role_router.priv_id = sys_router_temp.PRIV_ID
+            INNER JOIN sys_router ON sys_role_router.priv_id = sys_router.PRIV_ID
         WHERE 
         <foreach collection="list" index="index" item="item" open="" close="" separator="or">
             sys_role_router.role_id = #{item}
@@ -81,20 +81,20 @@
     </select>
     <select id="getAllMenu" resultMap="privMap">
         SELECT
-        sys_router_temp.PRIV_ID,
-        sys_router_temp.PRIV_CODE,
-        sys_router_temp.PARENT_ID,
-        sys_router_temp.PRIV_NAME,
-        sys_router_temp.PRIV_URL,
-        sys_router_temp.IS_MENU,
-        sys_router_temp.SORT_ID,
-        sys_router_temp.STATUS,
-        sys_router_temp.COMPONENT,
-        sys_router_temp.REDIRECT,
-        sys_router_temp.HIDDEN,
-        sys_router_temp.ALIAS,
-        sys_router_temp.ICON
+        sys_router.PRIV_ID,
+        sys_router.PRIV_CODE,
+        sys_router.PARENT_ID,
+        sys_router.PRIV_NAME,
+        sys_router.PRIV_URL,
+        sys_router.IS_MENU,
+        sys_router.SORT_ID,
+        sys_router.STATUS,
+        sys_router.COMPONENT,
+        sys_router.REDIRECT,
+        sys_router.HIDDEN,
+        sys_router.ALIAS,
+        sys_router.ICON
         FROM
-        sys_router_temp
+        sys_router
     </select>
 </mapper>
