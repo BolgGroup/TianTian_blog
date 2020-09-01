@@ -28,7 +28,7 @@ public class SysMenuController {
     public List<SysMenu> getAllMenu(){
         List<SysMenu> routerList = new ArrayList<SysMenu>();
         SysMenu router = sysMenuService.getAllMenu();
-        routerList = (router == null) ? null : router.getChildren();
+        routerList.add(router);
         return routerList;
     }
 
