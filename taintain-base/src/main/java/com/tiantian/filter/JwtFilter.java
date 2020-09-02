@@ -52,7 +52,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         } catch (IllegalStateException e) {
             HttpServletRequest httpRequest = WebUtils.toHttp(request);
             log.error(httpRequest.getRequestURI() + ": Not found any token");
-            httpResponse.setStatus(HttpStatus.SC_NO_CONTENT);
+            httpResponse.setStatus(HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION);
         } catch (Exception e) {
             log.error("Validate token fail, error:{}", e.getMessage());
         }
@@ -68,7 +68,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean sendChallenge(ServletRequest request, ServletResponse response) {
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
-        httpResponse.setStatus(HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION);
+        httpResponse.setStatus(HttpStatus.SC_NO_CONTENT);
         return false;
     }
 
