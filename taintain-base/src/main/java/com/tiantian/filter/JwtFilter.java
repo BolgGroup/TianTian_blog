@@ -9,6 +9,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,6 +17,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 鉴权登录拦截器
@@ -57,20 +59,21 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         return allowed || super.isPermissive(mappedValue);
     }
 
-
+    /**
+     * 此方法重写，是为了修改认证失败状态码，以便前台重新加载
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
-    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
-                                     ServletResponse response) {
-        log.error("Validate token fail, token:{}, error:{}", token.toString(), e.getMessage());
-        // throw new BusinessException("身份TOKEN认证失败，请重新登录");
+    protected boolean sendChallenge(ServletRequest request, ServletResponse response) {
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
-        // httpResponse.setHeader("token-failure", "validate-fail");
         httpResponse.setStatus(HttpStatus.SC_NON_AUTHORITATIVE_INFORMATION);
         return false;
     }
 
     /**
-     *
+     *  执行登陆
      */
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) {
