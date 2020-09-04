@@ -43,11 +43,16 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 拦截器
+
+        // 添加自己的过滤器并且取名为jwt
+        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
+        filterMap.put("jwt", new JwtFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断，登陆登出接口放行
         filterChainDefinitionMap.put("/base/login", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/base/logout", "anon");
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/error/*", "anon");
         filterChainDefinitionMap.put("/**/*.js", "anon");
@@ -58,6 +63,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.ico", "anon");
         filterChainDefinitionMap.put("/imgcode", "noSessionCreation,anon");
         filterChainDefinitionMap.put("/base/publickey", "noSessionCreation,anon");
+        filterChainDefinitionMap.put("/logout", "noSessionCreation,jwt[permissive]");
 
         // swagger 相关代码 此处不加则无法在swagger页面自动注入token
         filterChainDefinitionMap.put("/swagger-ui.html", "noSessionCreation,anon");
@@ -69,10 +75,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/user/test", "anon");
 
-        // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
-        filterMap.put("jwt", new JwtFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
         // <!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
         filterChainDefinitionMap.put("/**", "jwt");
 

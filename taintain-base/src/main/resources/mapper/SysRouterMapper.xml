@@ -69,6 +69,7 @@
         <foreach collection="list" index="index" item="item" open="" close="" separator="or">
             sys_role_router.role_id = #{item}
         </foreach>
+        ORDER BY sys_router.PARENT_ID, sys_router.SORT_ID
     </select>
     <select id="getUserRolesByUserId" resultType="string">
         SELECT
