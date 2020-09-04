@@ -35,8 +35,16 @@ public class SysRoleServiceImpl implements SysRoleService {
         //删除角色菜单
         sysRoleMapper.deleteMenu(commonMap);
         if (!StringUtil.isEmpty(commonMap.get("routes"))){
+            String[] routes;
             StringBuilder route = new StringBuilder(commonMap.get("routes"));
-            String[] routes = route.substring(1, route.length() - 1).split(",");
+            //赋予权限菜单，如未给任何菜单，则默认给两个最上级菜单,否则前端路由加载报错
+            if ((route.toString().split(",").length > 1)){
+                routes = route.substring(1, route.length() - 1).split(",");
+            }else {
+                routes = new String[2];
+                routes[0] = "10";
+                routes[1] = "20";
+            }
             //新增角色菜单
             sysRoleMapper.insertMenu(commonMap,routes);
         }
