@@ -15,16 +15,44 @@
     </select>
 
     <select id="getUserList" resultMap="sysUserMap" parameterType="string">
-        SELECT sys_user.user_id,sys_user.user_name,sys_user.PWD,sys_user.salt,sys_user.STATUS FROM sys_user
+        SELECT sys_user.user_id,sys_user.user_name,sys_user.STATUS FROM sys_user
         <where>
             <if test="userId != '' and userId != null">
                 user_id = #{userId}
             </if>
         </where>
     </select>
+    <select id="getUserRole" resultType="com.tiantian.entity.SysRole">
+        SELECT
+            r.ROLE_ID,
+            r.ROLE_CODE,
+            r.ROLE_NAME,
+            r.STATUS
+            FROM
+            sys_role AS r
+            INNER JOIN sys_user_role AS ur ON ur.role_id = r.ROLE_ID
+            WHERE
+            ur.user_id = #{userId}
+    </select>
 
     <update id="resetPwd" parameterType="com.tiantian.entity.SysUser">
         UPDATE sys_user SET pwd = #{pwd}, salt = #{salt} where user_id = #{userId}
     </update>
+
+    <insert id="insertUser" parameterType="com.tiantian.entity.SysUser">
+        INSERT INTO sys_user VALUES (
+          #{userId}
+          #{userName}
+          #{password}
+          #{salt}
+          0
+        )
+    </insert>
+    <insert id="insertUserRoles" parameterType="com.tiantian.entity.SysUser">
+        INSERT INTO sys_user_role VALUES
+          <foreach collection="roles" index="index" item="item" separator=",">
+              (#{userId},#{item})
+          </foreach>
+    </insert>
 
 </mapper>

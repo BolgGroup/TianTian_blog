@@ -7,6 +7,7 @@ import com.tiantian.service.SysRoleService;
 import com.tiantian.utils.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @author qi_bingo
  */
 @Service
+@Transactional
 public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
@@ -34,20 +36,18 @@ public class SysRoleServiceImpl implements SysRoleService {
     public void updateRole(CommonMap commonMap) {
         //删除角色菜单
         sysRoleMapper.deleteMenu(commonMap);
-        if (!StringUtil.isEmpty(commonMap.get("routes"))){
-            String[] routes;
-            StringBuilder route = new StringBuilder(commonMap.get("routes"));
+        String rou = commonMap.get("routes").substring(1);
+        rou = rou.substring(0, rou.length() - 1);
+        String[] routes;
+        if (!StringUtil.isEmpty(rou)) {
             //赋予权限菜单，如未给任何菜单，则默认给两个最上级菜单,否则前端路由加载报错
-            if ((route.toString().split(",").length > 1)){
-                routes = route.substring(1, route.length() - 1).split(",");
-            }else {
-                routes = new String[2];
-                routes[0] = "10";
-                routes[1] = "20";
-            }
-            //新增角色菜单
-            sysRoleMapper.insertMenu(commonMap,routes);
+            routes = rou.split(",");
+        } else {
+            routes = new String[2];
+            routes[0] = "10";
+            routes[1] = "20";
         }
+        sysRoleMapper.insertMenu(commonMap, routes);
         //修改角色信息
         sysRoleMapper.updateRole(commonMap);
     }
@@ -60,12 +60,18 @@ public class SysRoleServiceImpl implements SysRoleService {
         sysRole.setRoleName(commonMap.get("roleName"));
         sysRoleMapper.insertRole(sysRole);
         commonMap.put("roleId", sysRole.getRoleId());
-        if (!StringUtil.isEmpty(commonMap.get("routes"))){
-            StringBuilder route = new StringBuilder(commonMap.get("routes"));
-            String[] routes = route.substring(1, route.length() - 1).split(",");
+        String rou = commonMap.get("routes").substring(1);
+        rou = rou.substring(0, rou.length() - 1);
+        String[] routes;
+        if (!StringUtil.isEmpty(rou)) {
+            routes = rou.split(",");
             //新增角色菜单
-            sysRoleMapper.insertMenu(commonMap,routes);
+        }else {
+            routes = new String[2];
+            routes[0] = "10";
+            routes[1] = "20";
         }
+        sysRoleMapper.insertMenu(commonMap, routes);
     }
 
     @Override

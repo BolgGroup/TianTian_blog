@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -44,5 +45,10 @@ public class SysUser implements Serializable {
      */
     @TableField("STATUS")
     private String status;
+
+    /**
+     * 用户角色
+     */
+    List<String> roles;
 
 }

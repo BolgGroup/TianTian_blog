@@ -2,8 +2,10 @@ package com.tiantian.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tiantian.entity.SysRole;
 import com.tiantian.entity.SysUser;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,4 +51,17 @@ public interface SysUserService {
      * @param sysUser
      */
     void resetPwd(SysUser sysUser);
+
+    /**
+     * 根据用户id查询用户角色
+     * @param userId
+     * @return
+     */
+    List<SysRole> getUserRole(String userId);
+
+    /**
+     * 保存用户信息，包括用户角色
+     * @param sysUser
+     */
+    void insertUser(SysUser sysUser);
 }

@@ -2,8 +2,11 @@ package com.tiantian.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tiantian.entity.SysRole;
 import com.tiantian.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -29,4 +32,23 @@ public interface SysUserMapper {
      * @param sysUser
      */
     void resetPwd(SysUser sysUser);
+
+    /**
+     * 根据用户id查询用户角色
+     * @param userId
+     * @return
+     */
+    List<SysRole> getUserRole(String userId);
+
+    /**
+     * 新增用户信息
+     * @param sysUser
+     */
+    void insertUser(SysUser sysUser);
+
+    /**
+     * 新增用户角色
+     * @param sysUser
+     */
+    void insertUserRoles(SysUser sysUser);
 }

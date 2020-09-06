@@ -2,6 +2,7 @@ package com.tiantian.enums;
 
 /**
  * 返回状态码枚举类
+ *
  * @author qi_bingo
  */
 public enum ResultCode {
@@ -15,12 +16,11 @@ public enum ResultCode {
     RSA_DECRYPT_ERROR(5, "RSA解密异常"),
     /* 100~199区间表示系统 */
     CAPTCHA_ERROR(100, "验证码错误"), LOGIN_ERROR(101, "用户名或密码错误"), LOGIN_NULL_ERROR(102, "账号不存在"),
-    RESET_PASSWORD_ERROR(103, "重置密码异常"),
     /* 200~299区间表示应用操作错误 */
-    FILE_IS_NULL_ERROR(200, "上传文件为空"), FILE_UPLOAD_ERROR(201, "文件上传错误");
+    FILE_IS_NULL_ERROR(200, "上传文件为空"), FILE_UPLOAD_ERROR(201, "文件上传错误"),
     /* 300~399区间表示业务错误 */
-
-
+    USER_ROLE_SELECT_ERROR(301, "查询用户对应角色失败"), RESET_PASSWORD_ERROR(302, "不可重置当前用户"),
+    USER_SAVE_ERROR(303, "查询用户对应角色失败");
     private Integer code;
 
     private String message;
