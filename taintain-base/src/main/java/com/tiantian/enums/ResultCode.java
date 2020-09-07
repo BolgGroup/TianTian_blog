@@ -20,7 +20,9 @@ public enum ResultCode {
     FILE_IS_NULL_ERROR(200, "上传文件为空"), FILE_UPLOAD_ERROR(201, "文件上传错误"),
     /* 300~399区间表示业务错误 */
     USER_ROLE_SELECT_ERROR(301, "查询用户对应角色失败"), RESET_PASSWORD_ERROR(302, "不可重置当前用户"),
-    USER_SAVE_ERROR(303, "查询用户对应角色失败");
+    USER_SAVE_ERROR(303, "查询用户对应角色失败"), USER_PWD_EQUAL_ERROR(304, "旧密码错误");
+
+
     private Integer code;
 
     private String message;

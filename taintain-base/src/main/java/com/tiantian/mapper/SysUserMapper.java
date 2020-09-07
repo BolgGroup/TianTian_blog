@@ -41,14 +41,26 @@ public interface SysUserMapper {
     List<SysRole> getUserRole(String userId);
 
     /**
-     * 新增用户信息
+     * 修改用户信息
      * @param sysUser
      */
-    void insertUser(SysUser sysUser);
+    void updateUser(SysUser sysUser);
 
     /**
      * 新增用户角色
      * @param sysUser
      */
-    void insertUserRoles(SysUser sysUser);
+    void updateUserRoles(SysUser sysUser);
+
+    /**
+     * 删除用户角色
+     * @param userId
+     */
+    void deleteUserRoles(String userId);
+
+    /**
+     * 新增用户信息
+     * @param sysUser
+     */
+    void insertUser(SysUser sysUser);
 }

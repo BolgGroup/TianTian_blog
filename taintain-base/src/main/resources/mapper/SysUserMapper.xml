@@ -39,20 +39,31 @@
         UPDATE sys_user SET pwd = #{pwd}, salt = #{salt} where user_id = #{userId}
     </update>
 
-    <insert id="insertUser" parameterType="com.tiantian.entity.SysUser">
-        INSERT INTO sys_user VALUES (
-          #{userId}
-          #{userName}
-          #{password}
-          #{salt}
-          0
-        )
+    <insert id="updateUser" parameterType="com.tiantian.entity.SysUser">
+        UPDATE sys_user SET
+          user_name = #{userName},
+          pwd = #{password},
+          salt = #{salt}
+          where user_id = #{userId}
     </insert>
-    <insert id="insertUserRoles" parameterType="com.tiantian.entity.SysUser">
+    <insert id="updateUserRoles" parameterType="com.tiantian.entity.SysUser">
         INSERT INTO sys_user_role VALUES
           <foreach collection="roles" index="index" item="item" separator=",">
               (#{userId},#{item})
           </foreach>
     </insert>
+    <insert id="insertUser" parameterType="com.tiantian.entity.SysUser">
+        INSERT INTO sys_user VALUES (
+          #{userId},
+          #{userName},
+          #{pwd},
+          #{salt},
+          0
+        )
+    </insert>
+
+    <delete id="deleteUserRoles">
+        DELETE FROM sys_user_role WHERE user_id = #{userId}
+    </delete>
 
 </mapper>

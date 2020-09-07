@@ -35,6 +35,11 @@ public class SysUser implements Serializable {
     private String pwd;
 
     /**
+     * 用于接收前台传递的新密码，RSA加密，
+     */
+    private String password;
+
+    /**
      * 加密盐值
      */
     @TableField("SALT")

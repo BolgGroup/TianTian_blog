@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tiantian.entity.SysRole;
 import com.tiantian.entity.SysUser;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -61,6 +62,12 @@ public interface SysUserService {
 
     /**
      * 保存用户信息，包括用户角色
+     * @param sysUser
+     */
+    void updateUser(SysUser sysUser) throws Exception;
+
+    /**
+     * 新增用户信息
      * @param sysUser
      */
     void insertUser(SysUser sysUser);

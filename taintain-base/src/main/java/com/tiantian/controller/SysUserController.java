@@ -72,14 +72,23 @@ public class SysUserController {
         }
     }
 
+    @PostMapping("/updateUser")
+    @ApiOperation(value = "保存用户信息", notes = "修改用户信息", httpMethod = "POST")
+    public void updateUser(@RequestBody SysUser sysUser){
+        try {
+            sysUserService.updateUser(sysUser);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
     @PostMapping("/insertUser")
     @ApiOperation(value = "保存用户信息", notes = "新增用户信息", httpMethod = "POST")
     public void insertUser(@RequestBody SysUser sysUser){
         try {
             sysUserService.insertUser(sysUser);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessException(ResultCode.USER_SAVE_ERROR);
+            throw new BusinessException(e.getMessage());
         }
     }
 }
